@@ -63,33 +63,53 @@ export function searchingScreen(state) {
 export function resultWithFeedback(name) {
   return `
     <h2 class="text-2xl font-bold text-center text-pink-600 mb-4">
-      ${name}, destiny has something for you 💖
+      ${name}, destiny has been watching you 💖
     </h2>
 
-    <p class="text-sm text-gray-700 mb-3">
-      This person understands your silence more than your words.
-      They arrive when you least expect it, yet feel oddly familiar.
+    <p class="text-sm text-gray-700 mb-3 leading-relaxed">
+      This person doesn’t arrive loudly or dramatically. They enter your life
+      in a quiet, unexpected way — slowly becoming your safe space without
+      even trying. They understand your pauses, your mood shifts, and the
+      things you never say out loud.
     </p>
 
-    <p class="text-sm text-gray-700 mb-4">
-      Emotionally mature, protective, and deeply loyal —
-      destiny shaped them slowly, just for you.
+    <p class="text-sm text-gray-700 mb-4 leading-relaxed">
+      Emotionally mature and deeply loyal, they protect your peace rather
+      than disturb it. With them, love feels calm, secure, and strangely
+      familiar — as if fate spent years shaping them just so they could
+      meet you at the right moment.
     </p>
 
+    <!-- 🪄 SCRATCH TO REVEAL -->
     <div class="soulmate-wrapper">
-      <img src="./assets/images/soulmate.jpg" class="soulmate-img" id="soulmateImg">
+      <img
+        src="./assets/images/soulmate.jpg"
+        class="soulmate-img"
+        id="soulmateImg"
+      />
+
       <canvas id="scratchCanvas"></canvas>
-      <div class="scratch-text">Scratch to reveal ✨</div>
+
+      <div class="scratch-text">
+        Scratch to reveal ✨
+      </div>
     </div>
 
+    <!-- ⭐ STAR RATING -->
     <div class="star-rating">
-      ${[1,2,3,4,5].map(i => `<span class="star" data-value="${i}">★</span>`).join("")}
+      ${[1,2,3,4,5].map(i =>
+        `<span class="star" data-value="${i}">★</span>`
+      ).join("")}
     </div>
 
-    <textarea id="feedbackInput" class="input mb-4"
-      placeholder="Was this fun? 😂"></textarea>
+    <textarea
+      id="feedbackInput"
+      class="input mb-4"
+      placeholder="Was this fun? 😂">
+    </textarea>
 
-    <button id="submitFeedbackBtn"
+    <button
+      id="submitFeedbackBtn"
       class="w-full bg-pink-500 text-white py-3 rounded-2xl">
       Submit Feedback 💌
     </button>
