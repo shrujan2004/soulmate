@@ -9,90 +9,71 @@ import { saveUser, saveFeedback } from "./firebase.js";
 
 let userName = "";
 let userAge = "";
+let userState = "";
 let qIndex = 0;
-let userAnswers = {}; // 🔥 NEW
+let answers = {};
 
 const questions = [
   { q: "Your ideal vibe?", o: ["Soft 🫶", "Bold 😎", "Funny 😂"] },
-  { q: "Your place?", o: ["Delhi", "Bangalore", "Chandigarh", "Mumbai"] },
   { q: "Attracted to?", o: ["Eyes 👀", "Mind 🧠", "Body 💪"] },
   { q: "Weekend?", o: ["Netflix 🍿", "Party 🕺", "Sleep 😴"] },
-  { q: "Biggest red flag?", o: ["Lies ❌", "Anger 😡", "Ego 🧱"] },
   { q: "Biggest green flag?", o: ["Respect 🙏", "Loyalty 💍", "Ambition 🔥"] },
-  { q: "Love language?", o: ["Time ⏳", "Gifts 🎁", "Words 💬"] },
   { q: "Late night mood?", o: ["Overthinking 🌙", "Music 🎧", "Reels 📱"] }
 ];
 
-window.addEventListener("DOMContentLoaded", showIntro);
-
-function showIntro() {
+window.addEventListener("DOMContentLoaded", () => {
   render(introScreen());
-  document.getElementById("continueBtn").onclick = handleContinue;
-}
+  document.getElementById("continueBtn").onclick = startFlow;
+});
 
-function handleContinue() {
-  userName = document.getElementById("nameInput").value;
-  userAge = document.getElementById("ageInput").value;
+function startFlow() {
+  userName = nameInput.value;
+  userAge = ageInput.value;
+  userState = stateInput.value;
 
-  if (!userName || !userAge) {
+  if (!userName || !userAge || !userState) {
     alert("Fill all details 😌");
     return;
   }
 
   qIndex = 0;
-  userAnswers = {}; // reset for safety
+  answers = {};
   showQuestion();
 }
 
 function showQuestion() {
   render(questionScreen(questions[qIndex].q, questions[qIndex].o));
-
   document.querySelectorAll(".optionBtn").forEach(btn => {
     btn.onclick = () => {
-      // 🔥 STORE ANSWER
-      userAnswers[questions[qIndex].q] = btn.innerText;
-      nextQuestion();
+      answers[questions[qIndex].q] = btn.innerText;
+      qIndex++;
+      qIndex < questions.length ? showQuestion() : showVideo();
     };
   });
 }
 
-function nextQuestion() {
-  qIndex++;
-  qIndex < questions.length ? showQuestion() : showVideo();
-}
-
 function showVideo() {
-  render(searchingScreen());
-
-  const video = document.getElementById("matchVideo");
-  const btn = document.getElementById("videoTapBtn");
-
-  btn.onclick = () => {
-    btn.style.display = "none";
+  render(searchingScreen(userState));
+  const video = matchVideo;
+  videoTapBtn.onclick = () => {
+    videoTapBtn.style.display = "none";
     video.muted = false;
     video.play();
   };
-
   video.onended = showResult;
 }
 
 function showResult() {
-  // 🔥 SAVE USER + ANSWERS (FIRE & FORGET)
-  saveUser(userName, userAge, userAnswers).catch(() => {});
-
+  saveUser(userName, userAge, userState, answers).catch(() => {});
   render(resultWithFeedback(userName));
-  document.getElementById("submitFeedbackBtn").onclick = submitFeedback;
+  submitFeedbackBtn.onclick = submitFeedback;
 }
 
 function submitFeedback() {
-  const feedback = document.getElementById("feedbackInput").value;
-  const rating = document.getElementById("ratingInput").value;
-
-  if (!feedback || !rating) {
-    alert("Please give feedback 😇");
+  if (!feedbackInput.value || !ratingInput.value) {
+    alert("Give feedback 😇");
     return;
   }
-
-  saveFeedback(userName, userAge, feedback, rating).catch(() => {});
-  alert("Thanks! 💖");
+  saveFeedback(userName, userAge, feedbackInput.value, ratingInput.value).catch(()=>{});
+  alert("Thanks 💖");
 }

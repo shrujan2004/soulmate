@@ -1,11 +1,33 @@
 export function introScreen() {
   return `
-    <h2 class="text-2xl font-bold text-center mb-6">Soulmate Finder 💖</h2>
+    <h2 class="text-2xl font-bold text-center mb-6">
+      Soulmate Finder 💖
+    </h2>
 
     <input id="nameInput" class="input mb-4" placeholder="Your name" />
-    <select id="ageInput" class="input mb-6">
+
+    <select id="ageInput" class="input mb-4">
       <option value="">Your age</option>
       ${Array.from({ length: 30 }, (_, i) => `<option>${18 + i}</option>`).join("")}
+    </select>
+
+    <select id="stateInput" class="input dropdown-animate mb-6">
+      <option value="">Your state</option>
+      <option>Andhra Pradesh</option>
+      <option>Assam</option>
+      <option>Bihar</option>
+      <option>Chandigarh</option>
+      <option>Delhi</option>
+      <option>Gujarat</option>
+      <option>Karnataka</option>
+      <option>Kerala</option>
+      <option>Maharashtra</option>
+      <option>Punjab</option>
+      <option>Rajasthan</option>
+      <option>Tamil Nadu</option>
+      <option>Telangana</option>
+      <option>Uttar Pradesh</option>
+      <option>West Bengal</option>
     </select>
 
     <button id="continueBtn"
@@ -28,9 +50,15 @@ export function questionScreen(q, options) {
   `;
 }
 
-export function searchingScreen() {
+export function searchingScreen(state) {
   return `
-    <h2 class="text-xl font-bold text-center mb-4">Consulting destiny… 🌌</h2>
+    <h2 class="text-xl font-bold text-center mb-2">
+      Searching matches in
+    </h2>
+
+    <p class="text-center text-pink-600 font-semibold mb-4 text-lg">
+      ${state} 🌍
+    </p>
 
     <div class="relative">
       <video id="matchVideo" muted playsinline preload="auto">
@@ -57,10 +85,8 @@ export function resultWithFeedback(name) {
       99.8% compatibility 😌
     </p>
 
-    <h3 class="font-bold mb-2">Quick feedback 😇</h3>
-
     <textarea id="feedbackInput" class="input mb-3"
-      placeholder="Be honest… was this fun? 😂"></textarea>
+      placeholder="Was this fun? 😂"></textarea>
 
     <select id="ratingInput" class="input mb-4">
       <option value="">Rate it</option>

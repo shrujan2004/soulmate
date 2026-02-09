@@ -10,26 +10,39 @@ body {
 .input {
   width: 100%;
   padding: 14px 16px;
-  border-radius: 14px;
+  border-radius: 16px;
   border: 1px solid #e5e7eb;
   background: #fafafa;
+  transition: all 0.25s ease;
 }
 
 .input:focus {
   outline: none;
   border-color: #ec4899;
   background: #fff;
+  box-shadow: 0 10px 30px rgba(236,72,153,.2);
 }
 
 button {
   cursor: pointer;
+  transition: all .2s ease;
 }
 
 button:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
+}
+
+.optionBtn:hover {
+  transform: translateY(-2px);
 }
 
 img, video {
   width: 100%;
-  border-radius: 16px;
+  border-radius: 18px;
+}
+
+/* 🔥 Dropdown animation */
+.dropdown-animate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(236,72,153,0.25);
 }
