@@ -10,11 +10,3 @@ function render(html) {
 function vibrate(ms = 30) {
   navigator.vibrate?.(ms);
 }
-
-function stopVideo() {
-  const video = document.getElementById("matchVideo");
-  if (video) {
-    video.pause();
-    video.currentTime = 0;
-  }
-}
