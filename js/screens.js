@@ -4,6 +4,11 @@ export function introScreen(states) {
 
     <input id="nameInput" class="input mb-4" placeholder="Your name" />
 
+    <div class="status-pill mb-4">
+      <span class="status-dot"></span>
+      <span class="status-text"><strong>${(Math.floor(Math.random() * 9000) + 10000).toLocaleString()}</strong> people online now</span>
+    </div>
+
     <div class="select-wrapper mb-4">
       <select id="ageInput" class="input select-field">
         <option value="">Select age</option>

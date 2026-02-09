@@ -47,7 +47,7 @@ body::before {
   background: rgba(255,255,255,.85);
   backdrop-filter: blur(18px);
   border: 1px solid rgba(255,255,255,.4);
-  box-shadow: 0 25px 60px rgba(124,58,237,.25);
+  box-shadow: 0 25px 60px rgba(124,58,237,.25), inset 0 0 0 1px rgba(255,255,255,.35);
 }
 
 /* Inputs */
@@ -63,6 +63,39 @@ body::before {
   outline: none;
   border-color: #ec4899;
   box-shadow: 0 0 0 3px rgba(236,72,153,.25);
+}
+
+/* Status */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.8);
+  border: 1px solid rgba(124,58,237,.25);
+  box-shadow: 0 10px 20px rgba(124,58,237,.15);
+  font-size: 14px;
+  color: #3f1d4b;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 10px rgba(34,197,94,.7);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+.status-text strong {
+  font-weight: 700;
+  color: #6d28d9;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: .9; }
+  50% { transform: scale(1.25); opacity: .6; }
 }
 
 /* Select */
