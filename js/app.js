@@ -14,16 +14,58 @@ let qIndex = 0;
 let rating = 0;
 let answers = {};
 
-// South India states
+/* 🔥 SOUTH INDIA STATES */
 const southStates = [
+  "Andhra Pradesh",
   "Karnataka",
   "Kerala",
   "Tamil Nadu",
-  "Telangana",
-  "Andhra Pradesh"
+  "Telangana"
 ];
 
-// Questions
+/* 🇮🇳 ALL INDIAN STATES & UTs */
+const allStates = [
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+
+  /* UTs */
+  "Delhi",
+  "Chandigarh",
+  "Puducherry",
+  "Jammu & Kashmir",
+  "Ladakh",
+  "Lakshadweep",
+  "Andaman & Nicobar Islands",
+  "Dadra & Nagar Haveli and Daman & Diu"
+];
+
+/* QUESTIONS */
 const questions = [
   { q: "Your ideal vibe?", o: ["Soft 🫶","Bold 😎","Funny 😂"] },
   { q: "Weekend?", o: ["Netflix 🍿","Party 🕺","Sleep 😴"] },
@@ -45,7 +87,7 @@ window.onload = showIntro;
 /* ---------------- INTRO ---------------- */
 
 function showIntro() {
-  render(introScreen());
+  render(introScreen(allStates)); // 👈 pass full states list
   setupDropdown("ageDropdown", "ageLabel", "ageInput");
   setupDropdown("stateDropdown", "stateLabel", "stateInput");
   continueBtn.onclick = startFlow;
@@ -129,7 +171,8 @@ function showResult() {
   submitFeedbackBtn.onclick = submitFeedback;
 }
 
-/* 🔥 SCRATCH FIX (WORKS ON PC + MOBILE) */
+/* ---------------- SCRATCH ---------------- */
+
 function setupScratch() {
   const canvas = scratchCanvas;
   const img = soulmateImg;
@@ -139,60 +182,73 @@ function setupScratch() {
     const r = img.getBoundingClientRect();
     canvas.width = r.width;
     canvas.height = r.height;
-
     ctx.fillStyle = "#111";
     ctx.fillRect(0,0,canvas.width,canvas.height);
     ctx.globalCompositeOperation = "destination-out";
   };
 
-  let scratching=false, count=0;
+  let scratching = false;
+  let count = 0;
 
-  function pos(e){
-    const r=canvas.getBoundingClientRect();
+  function pos(e) {
+    const r = canvas.getBoundingClientRect();
     return e.touches
-      ? {x:e.touches[0].clientX-r.left,y:e.touches[0].clientY-r.top}
-      : {x:e.clientX-r.left,y:e.clientY-r.top};
+      ? { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top }
+      : { x: e.clientX - r.left, y: e.clientY - r.top };
   }
 
-  function scratch(e){
-    if(!scratching) return;
-    const {x,y}=pos(e);
+  function scratch(e) {
+    if (!scratching) return;
+    const { x, y } = pos(e);
     ctx.beginPath();
-    ctx.arc(x,y,22,0,Math.PI*2);
+    ctx.arc(x, y, 22, 0, Math.PI * 2);
     ctx.fill();
-    if(++count>120){
-      canvas.style.display="none";
+    if (++count > 120) {
+      canvas.style.display = "none";
       img.classList.add("revealed");
     }
   }
 
-  canvas.onmousedown=e=>{scratching=true;scratch(e)};
-  canvas.onmousemove=scratch;
-  canvas.onmouseup=()=>scratching=false;
-  canvas.onmouseleave=()=>scratching=false;
+  canvas.onmousedown = e => { scratching = true; scratch(e); };
+  canvas.onmousemove = scratch;
+  canvas.onmouseup = () => scratching = false;
+  canvas.onmouseleave = () => scratching = false;
 
-  canvas.addEventListener("touchstart",e=>{scratching=true;scratch(e)},{passive:false});
-  canvas.addEventListener("touchmove",e=>{e.preventDefault();scratch(e)},{passive:false});
-  canvas.addEventListener("touchend",()=>scratching=false);
+  canvas.addEventListener("touchstart", e => {
+    scratching = true;
+    scratch(e);
+  }, { passive: false });
+
+  canvas.addEventListener("touchmove", e => {
+    e.preventDefault();
+    scratch(e);
+  }, { passive: false });
+
+  canvas.addEventListener("touchend", () => scratching = false);
 }
 
-function setupStars(){
-  rating=0;
-  document.querySelectorAll(".star").forEach(s=>{
-    s.onclick=()=>{
-      rating=+s.dataset.value;
-      document.querySelectorAll(".star").forEach(x=>{
-        x.classList.toggle("active",+x.dataset.value<=rating);
-      });
+/* ---------------- STARS ---------------- */
+
+function setupStars() {
+  rating = 0;
+  document.querySelectorAll(".star").forEach(star => {
+    star.onclick = () => {
+      rating = Number(star.dataset.value);
+      document.querySelectorAll(".star").forEach(s =>
+        s.classList.toggle("active", Number(s.dataset.value) <= rating)
+      );
     };
   });
 }
 
-function submitFeedback(){
-  if(!feedbackInput.value||!rating){
+/* ---------------- FEEDBACK ---------------- */
+
+function submitFeedback() {
+  if (!feedbackInput.value || !rating) {
     alert("Give rating & feedback 😇");
     return;
   }
-  saveFeedback(userName,userAge,feedbackInput.value,rating).catch(()=>{});
+
+  saveFeedback(userName, userAge, feedbackInput.value, rating).catch(() => {});
   alert("Thanks 💖");
 }
