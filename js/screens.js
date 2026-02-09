@@ -18,6 +18,23 @@ function introScreen() {
   `;
 }
 
+function questionScreen(question, options) {
+  return `
+    <h2 class="text-xl font-bold text-center mb-5">
+      ${question}
+    </h2>
+
+    <div class="grid gap-3">
+      ${options.map(opt => `
+        <button onclick="nextQuestion()"
+          class="border rounded-2xl p-4 text-left hover:bg-pink-50">
+          ${opt}
+        </button>
+      `).join("")}
+    </div>
+  `;
+}
+
 function searchingScreen() {
   return `
     <h2 class="text-xl font-bold text-center mb-4">

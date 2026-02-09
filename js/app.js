@@ -1,11 +1,30 @@
 console.log("APP LOADED");
 
 window.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM READY");
   render(introScreen());
 });
 
 let userName = "";
+let qIndex = 0;
+
+const questions = [
+  {
+    q: "Your ideal vibe?",
+    o: ["Soft & caring 🫶", "Bold & confident 😎", "Funny & chill 😂"]
+  },
+  {
+    q: "What attracts you first?",
+    o: ["Eyes 👀", "Personality 🧠", "Body 💪"]
+  },
+  {
+    q: "Perfect weekend?",
+    o: ["Netflix & chill 🍿", "Party all night 🕺", "Sleep 😴"]
+  },
+  {
+    q: "Biggest turn-on?",
+    o: ["Respect 🙏", "Humor 😄", "Ambition 🔥"]
+  }
+];
 
 function saveUserInfo() {
   const nameEl = document.getElementById("nameInput");
@@ -17,7 +36,21 @@ function saveUserInfo() {
   }
 
   userName = nameEl.value;
-  startVideo();
+  qIndex = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  render(questionScreen(questions[qIndex].q, questions[qIndex].o));
+}
+
+function nextQuestion() {
+  qIndex++;
+  if (qIndex < questions.length) {
+    showQuestion();
+  } else {
+    startVideo();
+  }
 }
 
 function startVideo() {

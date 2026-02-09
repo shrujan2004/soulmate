@@ -35,18 +35,4 @@ body {
   outline: none;
   border-color: #ec4899;
   background: #fff;
-  box-shadow: 0 10px 25px rgba(236, 72, 153, 0.15);
-}
-
-button {
-  transition: transform 0.15s ease;
-}
-
-button:active {
-  transform: scale(0.96);
-}
-
-img, video {
-  max-width: 100%;
-  border-radius: 16px;
-}
+  box-shadow: 0 10px 25px rgba(236,
