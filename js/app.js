@@ -13,7 +13,7 @@ let qIndex = 0;
 
 const questions = [
   { q: "Your ideal vibe?", o: ["Soft 🫶", "Bold 😎", "Funny 😂"] },
-   { q: "Your place?", o: ["Delhi", "Uttar Pradesh", "Chandigarh"] },
+   { q: "Your place?", o: ["Delhi", "Uttar Pradesh", "Chandigarh","Mumbai"] },
   { q: "Attracted to?", o: ["Eyes 👀", "Mind 🧠", "Body 💪"] },
   { q: "Weekend?", o: ["Netflix 🍿", "Party 🕺", "Sleep 😴"] }
 ];
