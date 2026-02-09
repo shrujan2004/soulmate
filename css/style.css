@@ -1,0 +1,63 @@
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  user-select: none;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+/* Screen transition */
+.fade {
+  animation: fadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Premium inputs */
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  background: #fafafa;
+  transition: all 0.25s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #ec4899;
+  background: #fff;
+  box-shadow: 0 10px 25px rgba(236, 72, 153, 0.15);
+}
+
+/* Buttons */
+button {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+/* Media */
+img,
+video {
+  max-width: 100%;
+  display: block;
+  border-radius: 16px;
+}
+
+video {
+  min-height: 180px;
+  background: #000;
+}
