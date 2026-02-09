@@ -38,7 +38,9 @@ export function questionScreen(q, options) {
   return `
     <h2 class="text-xl font-bold text-center mb-5">${q}</h2>
     <div class="grid gap-3">
-      ${options.map(o => `<button class="optionBtn border rounded-2xl p-4">${o}</button>`).join("")}
+      ${options.map(o =>
+        `<button class="optionBtn border rounded-2xl p-4">${o}</button>`
+      ).join("")}
     </div>
   `;
 }
@@ -49,9 +51,7 @@ export function searchingScreen(state) {
     <p class="text-center text-pink-600 font-semibold mb-4">${state} 🌍</p>
 
     <div class="relative">
-      <video id="matchVideo" muted playsinline>
-        <source src="./assets/videos/heaven.mp4" type="video/mp4">
-      </video>
+      <video id="matchVideo" muted playsinline></video>
       <button id="videoTapBtn"
         class="absolute inset-0 bg-black/50 text-white flex items-center justify-center rounded-2xl">
         Tap to continue 🔊
@@ -63,10 +63,24 @@ export function searchingScreen(state) {
 export function resultWithFeedback(name) {
   return `
     <h2 class="text-2xl font-bold text-center text-pink-600 mb-4">
-      ${name}, this is your soulmate 💖
+      ${name}, destiny has something for you 💖
     </h2>
 
-    <img src="./assets/images/soulmate.jpg" class="mb-4" />
+    <p class="text-sm text-gray-700 mb-3">
+      This person understands your silence more than your words.
+      They arrive when you least expect it, yet feel oddly familiar.
+    </p>
+
+    <p class="text-sm text-gray-700 mb-4">
+      Emotionally mature, protective, and deeply loyal —
+      destiny shaped them slowly, just for you.
+    </p>
+
+    <div class="soulmate-wrapper">
+      <img src="./assets/images/soulmate.jpg" class="soulmate-img" id="soulmateImg">
+      <canvas id="scratchCanvas"></canvas>
+      <div class="scratch-text">Scratch to reveal ✨</div>
+    </div>
 
     <div class="star-rating">
       ${[1,2,3,4,5].map(i => `<span class="star" data-value="${i}">★</span>`).join("")}

@@ -9,7 +9,7 @@ body {
 }
 
 #app {
-  background: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.82);
   backdrop-filter: blur(18px);
 }
 
@@ -20,7 +20,7 @@ body {
   border-radius: 16px;
   border: 1px solid rgba(0,0,0,.08);
   background: rgba(255,255,255,.9);
-  transition: all .25s ease;
+  transition: .25s ease;
 }
 
 .input:focus {
@@ -31,11 +31,8 @@ body {
 }
 
 /* Buttons */
-button {
-  cursor: pointer;
-  transition: all .2s ease;
-}
-button:active { transform: scale(0.95); }
+button { cursor: pointer; transition: .2s ease; }
+button:active { transform: scale(.95); }
 
 /* Options */
 .optionBtn {
@@ -63,7 +60,6 @@ img, video {
   border: 1px solid rgba(0,0,0,.08);
   display: flex;
   justify-content: space-between;
-  cursor: pointer;
 }
 
 .dropdown-list {
@@ -72,7 +68,7 @@ img, video {
   width: 100%;
   max-height: 260px;
   overflow-y: auto;
-  background: rgba(255,255,255,.95);
+  background: rgba(255,255,255,.96);
   border-radius: 18px;
   box-shadow: 0 30px 60px rgba(0,0,0,.2);
   opacity: 0;
@@ -100,7 +96,6 @@ img, video {
   gap: 10px;
   margin-bottom: 16px;
 }
-
 .star {
   font-size: 28px;
   cursor: pointer;
@@ -109,4 +104,38 @@ img, video {
 .star.active {
   color: #f59e0b;
   transform: scale(1.15);
+}
+
+/* ---------- SCRATCH REVEAL ---------- */
+.soulmate-wrapper {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.soulmate-img {
+  filter: blur(18px);
+  transition: filter .6s ease;
+}
+
+.soulmate-img.revealed {
+  filter: blur(0);
+}
+
+#scratchCanvas {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: #111;
+}
+
+.scratch-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 1px;
+  pointer-events: none;
 }
