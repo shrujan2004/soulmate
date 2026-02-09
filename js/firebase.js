@@ -1,10 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCogzoDlsHB_vHKkRPorDWx0W6xCExq7rg",
@@ -20,20 +16,14 @@ const db = getFirestore(app);
 
 export function saveUser(name, age, state, answers) {
   return addDoc(collection(db, "users"), {
-    name,
-    age,
-    state,
-    answers,
+    name, age, state, answers,
     createdAt: serverTimestamp()
   });
 }
 
 export function saveFeedback(name, age, feedback, rating) {
   return addDoc(collection(db, "feedback"), {
-    name,
-    age,
-    feedback,
-    rating,
+    name, age, feedback, rating,
     createdAt: serverTimestamp()
   });
 }
