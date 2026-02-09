@@ -53,7 +53,50 @@ const questions = [
   { q: "What scares you in love?", o: ["Getting hurt 💔","Commitment 😬","Losing freedom 🕊️"] }
 ];
 
-window.onload = showIntro;
+window.onload = () => {
+  setupBackground();
+  showIntro();
+};
+
+function setupBackground() {
+  const root = document.documentElement;
+  let targetX = 50;
+  let targetY = 30;
+  let currentX = 50;
+  let currentY = 30;
+  let rafId = null;
+
+  function apply() {
+    currentX += (targetX - currentX) * 0.12;
+    currentY += (targetY - currentY) * 0.12;
+    root.style.setProperty("--bg-x", `${currentX}%`);
+    root.style.setProperty("--bg-y", `${currentY}%`);
+    rafId = requestAnimationFrame(apply);
+  }
+
+  function updateFromPoint(clientX, clientY) {
+    const { innerWidth, innerHeight } = window;
+    targetX = Math.min(100, Math.max(0, (clientX / innerWidth) * 100));
+    targetY = Math.min(100, Math.max(0, (clientY / innerHeight) * 100));
+    if (!rafId) {
+      rafId = requestAnimationFrame(apply);
+    }
+  }
+
+  window.addEventListener("mousemove", event => {
+    updateFromPoint(event.clientX, event.clientY);
+  });
+
+  window.addEventListener("touchmove", event => {
+    if (!event.touches?.length) return;
+    updateFromPoint(event.touches[0].clientX, event.touches[0].clientY);
+  }, { passive: true });
+
+  window.addEventListener("touchstart", event => {
+    if (!event.touches?.length) return;
+    updateFromPoint(event.touches[0].clientX, event.touches[0].clientY);
+  }, { passive: true });
+}
 
 /* ---------------- INTRO ---------------- */
 

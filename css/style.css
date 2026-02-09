@@ -5,10 +5,32 @@
 
 body {
   font-family: Inter, system-ui;
-  background: radial-gradient(circle at top, #ffd6e8, #c084fc);
+  background:
+    radial-gradient(circle at var(--bg-x, 50%) var(--bg-y, 30%), rgba(255,255,255,.9), rgba(255,214,232,.65) 35%, rgba(192,132,252,.65) 70%),
+    radial-gradient(circle at 20% 80%, rgba(56,189,248,.35), transparent 55%),
+    linear-gradient(160deg, rgba(15,23,42,.2), rgba(124,58,237,.25));
+  background-attachment: fixed;
+  transition: background-position .15s ease;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  background:
+    radial-gradient(circle at var(--bg-x, 50%) var(--bg-y, 30%), rgba(236,72,153,.25), transparent 55%),
+    radial-gradient(circle at calc(100% - var(--bg-x, 50%)) calc(100% - var(--bg-y, 30%)), rgba(124,58,237,.25), transparent 55%);
+  filter: blur(20px);
+  opacity: .8;
+  pointer-events: none;
+  z-index: 0;
 }
 
 #app {
+  position: relative;
+  z-index: 1;
   background: rgba(255,255,255,.85);
   backdrop-filter: blur(18px);
   border: 1px solid rgba(255,255,255,.4);
