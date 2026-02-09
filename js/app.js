@@ -10,30 +10,46 @@ const dialogues = [
 
 let dialogueIndex = 0;
 let dialogueInterval;
+let safetyTimer;
 
-// ENTRY POINT – call this after questions
 function searchSoulmate() {
-  vibrate();
   render(searchingScreen());
 
   const video = document.getElementById("matchVideo");
+  const skeleton = document.getElementById("videoSkeleton");
   const status = document.getElementById("videoStatus");
 
-  // When enough video is loaded
-  video.addEventListener("loadeddata", () => {
-    status.innerText = "Accessing heaven database…";
+  let videoStarted = false;
+
+  // 🔒 FAIL-SAFE: never freeze UI
+  safetyTimer = setTimeout(() => {
+    if (!videoStarted) {
+      console.warn("Video slow → skipping to matchmaking");
+      startMatchmaking();
+    }
+  }, 5000); // 5s max wait
+
+  // When video can actually play
+  video.addEventListener("canplay", () => {
+    videoStarted = true;
+    clearTimeout(safetyTimer);
+
+    skeleton.classList.add("hidden");
+    video.classList.remove("hidden");
+
+    status.innerText = "Consulting Prabhu… 😇";
     video.volume = 0.9;
-    video.play().catch(() => {});
+    video.play().catch(() => startMatchmaking());
   });
 
-  // WHEN VIDEO COMPLETES
+  // When video finishes fully
   video.addEventListener("ended", () => {
     startMatchmaking();
   });
 }
 
-// MATCHMAKING STARTS ONLY AFTER VIDEO END
 function startMatchmaking() {
+  clearTimeout(safetyTimer);
   render(matchmakingScreen());
 
   dialogueInterval = setInterval(() => {
@@ -44,10 +60,8 @@ function startMatchmaking() {
     }
   }, 900);
 
-  // After matchmaking → final reveal
   setTimeout(() => {
     clearInterval(dialogueInterval);
     render(resultScreen(userName));
-    vibrate(120);
   }, 4500);
 }
