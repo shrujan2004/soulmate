@@ -55,8 +55,138 @@ const questions = [
 
 window.onload = () => {
   setupBackground();
+  setupWebglBackground();
   showIntro();
 };
+
+function setupWebglBackground() {
+  const canvas = document.createElement("canvas");
+  canvas.id = "bg-canvas";
+  document.body.prepend(canvas);
+
+  const gl = canvas.getContext("webgl", { alpha: true, antialias: true });
+  if (!gl) return;
+
+  const vertexSrc = `
+    attribute vec2 position;
+    void main() {
+      gl_Position = vec4(position, 0.0, 1.0);
+    }
+  `;
+  const fragmentSrc = `
+    precision mediump float;
+    uniform vec2 uResolution;
+    uniform float uTime;
+    uniform vec2 uPointer;
+
+    vec3 palette(float t) {
+      vec3 a = vec3(0.8, 0.5, 0.9);
+      vec3 b = vec3(0.3, 0.7, 0.9);
+      vec3 c = vec3(0.9, 0.3, 0.7);
+      vec3 d = vec3(0.2, 0.2, 0.6);
+      return a + b * cos(6.28318 * (c * t + d));
+    }
+
+    void main() {
+      vec2 uv = gl_FragCoord.xy / uResolution.xy;
+      vec2 p = uv - 0.5;
+      p.x *= uResolution.x / uResolution.y;
+
+      float swirl = sin((p.x + uPointer.x) * 6.0 + uTime * 0.4)
+        + cos((p.y + uPointer.y) * 6.0 - uTime * 0.35);
+      float glow = exp(-length(p + uPointer) * 3.0);
+      float t = swirl * 0.15 + glow * 0.6 + uTime * 0.02;
+      vec3 color = palette(t);
+      color += glow * vec3(0.6, 0.2, 0.8);
+      gl_FragColor = vec4(color, 0.45);
+    }
+  `;
+
+  function compile(type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    return shader;
+  }
+
+  const vertexShader = compile(gl.VERTEX_SHADER, vertexSrc);
+  const fragmentShader = compile(gl.FRAGMENT_SHADER, fragmentSrc);
+  const program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  gl.useProgram(program);
+
+  const positionBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
+    gl.STATIC_DRAW
+  );
+
+  const positionLocation = gl.getAttribLocation(program, "position");
+  gl.enableVertexAttribArray(positionLocation);
+  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+  const resolutionUniform = gl.getUniformLocation(program, "uResolution");
+  const timeUniform = gl.getUniformLocation(program, "uTime");
+  const pointerUniform = gl.getUniformLocation(program, "uPointer");
+
+  const pointer = { x: 0.0, y: 0.0 };
+  const pointerTarget = { x: 0.0, y: 0.0 };
+
+  function resize() {
+    const { innerWidth, innerHeight, devicePixelRatio } = window;
+    const scale = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = innerWidth * scale;
+    canvas.height = innerHeight * scale;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.uniform2f(resolutionUniform, canvas.width, canvas.height);
+  }
+
+  function updatePointer(clientX, clientY) {
+    const x = (clientX / window.innerWidth) * 2 - 1;
+    const y = (1 - clientY / window.innerHeight) * 2 - 1;
+    pointerTarget.x = x * 0.35;
+    pointerTarget.y = y * 0.35;
+  }
+
+  window.addEventListener("mousemove", event => {
+    updatePointer(event.clientX, event.clientY);
+  });
+
+  window.addEventListener("touchmove", event => {
+    if (!event.touches?.length) return;
+    updatePointer(event.touches[0].clientX, event.touches[0].clientY);
+  }, { passive: true });
+
+  window.addEventListener("touchstart", event => {
+    if (!event.touches?.length) return;
+    updatePointer(event.touches[0].clientX, event.touches[0].clientY);
+  }, { passive: true });
+
+  window.addEventListener("resize", resize);
+  resize();
+
+  let time = 0;
+  const speed = { value: 0.5 };
+  if (window.gsap) {
+    window.gsap.to(speed, { value: 1.2, duration: 6, ease: "sine.inOut", yoyo: true, repeat: -1 });
+  }
+
+  function renderFrame() {
+    time += 0.01 * speed.value;
+    pointer.x += (pointerTarget.x - pointer.x) * 0.06;
+    pointer.y += (pointerTarget.y - pointer.y) * 0.06;
+    gl.uniform1f(timeUniform, time);
+    gl.uniform2f(pointerUniform, pointer.x, pointer.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(renderFrame);
+  }
+
+  requestAnimationFrame(renderFrame);
+}
 
 function setupBackground() {
   const root = document.documentElement;
