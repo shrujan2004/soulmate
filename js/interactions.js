@@ -1,8 +1,8 @@
-const app = document.getElementById("app");
+export const appDiv = document.getElementById("app");
 
-function render(html) {
-  app.innerHTML = html;
-  app.classList.remove("fade");
-  void app.offsetWidth;
-  app.classList.add("fade");
+export function render(html) {
+  appDiv.innerHTML = html;
+  appDiv.classList.remove("fade");
+  void appDiv.offsetWidth;
+  appDiv.classList.add("fade");
 }

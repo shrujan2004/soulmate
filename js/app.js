@@ -1,58 +1,71 @@
-window.addEventListener("DOMContentLoaded", () => {
-  render(introScreen());
-});
+import { render } from "./interactions.js";
+import {
+  introScreen,
+  questionScreen,
+  searchingScreen,
+  feedbackScreen,
+  resultScreen
+} from "./screens.js";
+import { saveUser, saveFeedback } from "./firebase.js";
 
 let userName = "";
+let userAge = "";
 let qIndex = 0;
 
 const questions = [
   { q: "Your ideal vibe?", o: ["Soft 🫶", "Bold 😎", "Funny 😂"] },
-  { q: "What attracts you first?", o: ["Eyes 👀", "Mind 🧠", "Body 💪"] },
-  { q: "Perfect weekend?", o: ["Netflix 🍿", "Party 🕺", "Sleep 😴"] },
-  { q: "Biggest turn-on?", o: ["Respect 🙏", "Humor 😄", "Ambition 🔥"] }
+  { q: "Attracted to?", o: ["Eyes 👀", "Mind 🧠", "Body 💪"] },
+  { q: "Weekend?", o: ["Netflix 🍿", "Party 🕺", "Sleep 😴"] },
+  { q: "Turn-on?", o: ["Respect 🙏", "Humor 😄", "Ambition 🔥"] }
 ];
 
-function saveUserInfo() {
-  const name = document.getElementById("nameInput").value;
-  const age = document.getElementById("ageInput").value;
+window.addEventListener("DOMContentLoaded", () => {
+  render(introScreen());
+});
 
-  if (!name || !age) {
+window.saveUserInfo = async function () {
+  userName = document.getElementById("nameInput").value;
+  userAge = document.getElementById("ageInput").value;
+
+  if (!userName || !userAge) {
     alert("Fill all details 😌");
     return;
   }
 
-  userName = name;
+  await saveUser(userName, userAge);
   qIndex = 0;
-  showQuestion();
-}
+  render(questionScreen(questions[0].q, questions[0].o));
+};
 
-function showQuestion() {
-  render(questionScreen(questions[qIndex].q, questions[qIndex].o));
-}
-
-function nextQuestion() {
+window.nextQuestion = function () {
   qIndex++;
   if (qIndex < questions.length) {
-    showQuestion();
+    render(questionScreen(questions[qIndex].q, questions[qIndex].o));
   } else {
     render(searchingScreen());
   }
-}
+};
 
-/* 🔊 USER TAP = VIDEO + SOUND (MOBILE SAFE) */
-function startVideoFromTap() {
+window.startVideoFromTap = function () {
   const video = document.getElementById("matchVideo");
-  const btn = document.getElementById("videoTapBtn");
-  const status = document.getElementById("videoStatus");
-
-  btn.style.display = "none";
-  status.innerText = "Consulting Prabhu… 😇";
+  document.getElementById("videoTapBtn").style.display = "none";
 
   video.muted = false;
   video.volume = 0.9;
   video.play();
 
-  video.addEventListener("ended", () => {
-    render(resultScreen(userName));
-  });
-}
+  video.onended = () => render(feedbackScreen());
+};
+
+window.submitFeedback = async function () {
+  const feedback = document.getElementById("feedbackInput").value;
+  const rating = document.getElementById("ratingInput").value;
+
+  if (!feedback || !rating) {
+    alert("Please fill feedback 😇");
+    return;
+  }
+
+  await saveFeedback(userName, userAge, feedback, rating);
+  render(resultScreen(userName));
+};
