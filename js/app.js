@@ -129,97 +129,70 @@ function showResult() {
   submitFeedbackBtn.onclick = submitFeedback;
 }
 
-/* ---------------- SCRATCH REVEAL ---------------- */
-
+/* 🔥 SCRATCH FIX (WORKS ON PC + MOBILE) */
 function setupScratch() {
-  const canvas = document.getElementById("scratchCanvas");
-  const img = document.getElementById("soulmateImg");
+  const canvas = scratchCanvas;
+  const img = soulmateImg;
   const ctx = canvas.getContext("2d");
 
-  const rect = canvas.getBoundingClientRect();
-  canvas.width = rect.width;
-  canvas.height = rect.height;
+  img.onload = () => {
+    const r = img.getBoundingClientRect();
+    canvas.width = r.width;
+    canvas.height = r.height;
 
-  ctx.fillStyle = "#111";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.globalCompositeOperation = "destination-out";
+    ctx.fillStyle = "#111";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.globalCompositeOperation = "destination-out";
+  };
 
-  let scratching = false;
-  let scratchedCount = 0;
+  let scratching=false, count=0;
 
-  function getPos(e) {
-    const r = canvas.getBoundingClientRect();
-    if (e.touches) {
-      return {
-        x: e.touches[0].clientX - r.left,
-        y: e.touches[0].clientY - r.top
-      };
-    }
-    return {
-      x: e.clientX - r.left,
-      y: e.clientY - r.top
-    };
+  function pos(e){
+    const r=canvas.getBoundingClientRect();
+    return e.touches
+      ? {x:e.touches[0].clientX-r.left,y:e.touches[0].clientY-r.top}
+      : {x:e.clientX-r.left,y:e.clientY-r.top};
   }
 
-  function scratch(e) {
-    if (!scratching) return;
-    const { x, y } = getPos(e);
-
+  function scratch(e){
+    if(!scratching) return;
+    const {x,y}=pos(e);
     ctx.beginPath();
-    ctx.arc(x, y, 20, 0, Math.PI * 2);
+    ctx.arc(x,y,22,0,Math.PI*2);
     ctx.fill();
-
-    scratchedCount++;
-    if (scratchedCount > 120) {
-      canvas.style.display = "none";
+    if(++count>120){
+      canvas.style.display="none";
       img.classList.add("revealed");
     }
   }
 
-  // Mouse
-  canvas.addEventListener("mousedown", e => {
-    scratching = true;
-    scratch(e);
-  });
-  canvas.addEventListener("mouseup", () => scratching = false);
-  canvas.addEventListener("mouseleave", () => scratching = false);
-  canvas.addEventListener("mousemove", scratch);
+  canvas.onmousedown=e=>{scratching=true;scratch(e)};
+  canvas.onmousemove=scratch;
+  canvas.onmouseup=()=>scratching=false;
+  canvas.onmouseleave=()=>scratching=false;
 
-  // Touch
-  canvas.addEventListener("touchstart", e => {
-    scratching = true;
-    scratch(e);
-  }, { passive: false });
-
-  canvas.addEventListener("touchend", () => scratching = false);
-  canvas.addEventListener("touchmove", e => {
-    e.preventDefault();
-    scratch(e);
-  }, { passive: false });
+  canvas.addEventListener("touchstart",e=>{scratching=true;scratch(e)},{passive:false});
+  canvas.addEventListener("touchmove",e=>{e.preventDefault();scratch(e)},{passive:false});
+  canvas.addEventListener("touchend",()=>scratching=false);
 }
 
-/* ---------------- STARS ---------------- */
-
-function setupStars() {
-  rating = 0;
-  document.querySelectorAll(".star").forEach(star => {
-    star.onclick = () => {
-      rating = Number(star.dataset.value);
-      document.querySelectorAll(".star").forEach(s =>
-        s.classList.toggle("active", Number(s.dataset.value) <= rating)
-      );
+function setupStars(){
+  rating=0;
+  document.querySelectorAll(".star").forEach(s=>{
+    s.onclick=()=>{
+      rating=+s.dataset.value;
+      document.querySelectorAll(".star").forEach(x=>{
+        x.classList.toggle("active",+x.dataset.value<=rating);
+      });
     };
   });
 }
 
-/* ---------------- FEEDBACK ---------------- */
-
-function submitFeedback() {
-  if (!feedbackInput.value || !rating) {
+function submitFeedback(){
+  if(!feedbackInput.value||!rating){
     alert("Give rating & feedback 😇");
     return;
   }
-
-  saveFeedback(userName, userAge, feedbackInput.value, rating).catch(() => {});
+  saveFeedback(userName,userAge,feedbackInput.value,rating).catch(()=>{});
   alert("Thanks 💖");
 }

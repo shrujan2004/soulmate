@@ -1,31 +1,25 @@
 export function introScreen() {
-  const states = [
-    "Andhra Pradesh","Assam","Bihar","Chandigarh","Delhi","Gujarat",
-    "Karnataka","Kerala","Maharashtra","Punjab","Rajasthan",
-    "Tamil Nadu","Telangana","Uttar Pradesh","West Bengal"
-  ];
-  const ages = Array.from({ length: 30 }, (_, i) => 18 + i);
-
   return `
     <h2 class="text-2xl font-bold text-center mb-6">Soulmate Finder 💖</h2>
 
     <input id="nameInput" class="input mb-4" placeholder="Your name" />
 
-    <div class="dropdown mb-4" id="ageDropdown">
-      <div class="dropdown-btn"><span id="ageLabel">Select age</span><span>⌄</span></div>
-      <div class="dropdown-list">
-        ${ages.map(a => `<div class="dropdown-item">${a}</div>`).join("")}
-      </div>
-    </div>
-    <input type="hidden" id="ageInput" />
+    <select id="ageInput" class="input mb-4">
+      <option value="">Select age</option>
+      ${Array.from({ length: 30 }, (_, i) => `<option>${18 + i}</option>`).join("")}
+    </select>
 
-    <div class="dropdown mb-6" id="stateDropdown">
-      <div class="dropdown-btn"><span id="stateLabel">Select state</span><span>⌄</span></div>
-      <div class="dropdown-list">
-        ${states.map(s => `<div class="dropdown-item">${s}</div>`).join("")}
-      </div>
-    </div>
-    <input type="hidden" id="stateInput" />
+    <select id="stateInput" class="input mb-6">
+      <option value="">Select state</option>
+      <option>Karnataka</option>
+      <option>Kerala</option>
+      <option>Tamil Nadu</option>
+      <option>Telangana</option>
+      <option>Andhra Pradesh</option>
+      <option>Maharashtra</option>
+      <option>Delhi</option>
+      <option>Punjab</option>
+    </select>
 
     <button id="continueBtn"
       class="w-full bg-pink-500 text-white py-4 rounded-2xl font-semibold">
@@ -66,50 +60,32 @@ export function resultWithFeedback(name) {
       ${name}, destiny has been watching you 💖
     </h2>
 
-    <p class="text-sm text-gray-700 mb-3 leading-relaxed">
-      This person doesn’t arrive loudly or dramatically. They enter your life
-      in a quiet, unexpected way — slowly becoming your safe space without
-      even trying. They understand your pauses, your mood shifts, and the
-      things you never say out loud.
+    <p class="text-sm text-gray-700 mb-3">
+      This person enters your life quietly and changes everything.
+      They understand your silence, your moods, and your unspoken fears.
     </p>
 
-    <p class="text-sm text-gray-700 mb-4 leading-relaxed">
-      Emotionally mature and deeply loyal, they protect your peace rather
-      than disturb it. With them, love feels calm, secure, and strangely
-      familiar — as if fate spent years shaping them just so they could
-      meet you at the right moment.
+    <p class="text-sm text-gray-700 mb-4">
+      Calm, emotionally mature, and deeply loyal — love with them feels
+      safe, familiar, and destined.
     </p>
 
-    <!-- 🪄 SCRATCH TO REVEAL -->
     <div class="soulmate-wrapper">
-      <img
-        src="./assets/images/soulmate.jpg"
-        class="soulmate-img"
-        id="soulmateImg"
-      />
-
+      <img src="./assets/images/soulmate.jpg"
+           id="soulmateImg"
+           class="soulmate-img" />
       <canvas id="scratchCanvas"></canvas>
-
-      <div class="scratch-text">
-        Scratch to reveal ✨
-      </div>
+      <div class="scratch-text">Scratch to reveal ✨</div>
     </div>
 
-    <!-- ⭐ STAR RATING -->
     <div class="star-rating">
-      ${[1,2,3,4,5].map(i =>
-        `<span class="star" data-value="${i}">★</span>`
-      ).join("")}
+      ${[1,2,3,4,5].map(i => `<span class="star" data-value="${i}">★</span>`).join("")}
     </div>
 
-    <textarea
-      id="feedbackInput"
-      class="input mb-4"
-      placeholder="Was this fun? 😂">
-    </textarea>
+    <textarea id="feedbackInput" class="input mb-4"
+      placeholder="Was this fun? 😂"></textarea>
 
-    <button
-      id="submitFeedbackBtn"
+    <button id="submitFeedbackBtn"
       class="w-full bg-pink-500 text-white py-3 rounded-2xl">
       Submit Feedback 💌
     </button>
