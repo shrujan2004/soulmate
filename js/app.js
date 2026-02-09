@@ -148,6 +148,12 @@ function setupScratch() {
     revealed = true;
     canvas.remove();
     img.classList.add("revealed");
+    if (typeof revealBtn !== "undefined") {
+      revealBtn.remove();
+    }
+    if (typeof scratchText !== "undefined") {
+      scratchText.remove();
+    }
   }
 
   function pos(e) {
@@ -190,6 +196,9 @@ function setupScratch() {
   canvas.addEventListener("dblclick", reveal);
 
   canvas.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
+  if (typeof revealBtn !== "undefined") {
+    revealBtn.addEventListener("click", reveal);
+  }
 }
 
 /* ---------------- STARS ---------------- */
