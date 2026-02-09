@@ -28,6 +28,30 @@ body {
   box-shadow: 0 0 0 3px rgba(236,72,153,.25);
 }
 
+/* Select */
+.select-wrapper {
+  position: relative;
+}
+
+.select-field {
+  appearance: none;
+  background: linear-gradient(135deg, rgba(255,255,255,.98), rgba(249,240,255,.95));
+  border: 1px solid rgba(236,72,153,.35);
+  box-shadow: 0 6px 18px rgba(236,72,153,.12);
+  color: #3f1d4b;
+}
+
+.select-wrapper::after {
+  content: "▾";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ec4899;
+  pointer-events: none;
+  font-size: 18px;
+}
+
 /* Options */
 .optionBtn {
   background: white;
@@ -86,6 +110,7 @@ img, video {
   inset: 0;
   background: #111;
   touch-action: none;
+  cursor: pointer;
 }
 
 .scratch-text {

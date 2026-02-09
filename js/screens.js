@@ -4,15 +4,19 @@ export function introScreen(states) {
 
     <input id="nameInput" class="input mb-4" placeholder="Your name" />
 
-    <select id="ageInput" class="input mb-4">
-      <option value="">Select age</option>
-      ${Array.from({length:30},(_,i)=>`<option>${18+i}</option>`).join("")}
-    </select>
+    <div class="select-wrapper mb-4">
+      <select id="ageInput" class="input select-field">
+        <option value="">Select age</option>
+        ${Array.from({length:30},(_,i)=>`<option>${18+i}</option>`).join("")}
+      </select>
+    </div>
 
-    <select id="stateInput" class="input mb-6">
-      <option value="">Select state</option>
-      ${states.map(s=>`<option>${s}</option>`).join("")}
-    </select>
+    <div class="select-wrapper mb-6">
+      <select id="stateInput" class="input select-field">
+        <option value="">Select state</option>
+        ${states.map(s=>`<option>${s}</option>`).join("")}
+      </select>
+    </div>
 
     <button id="continueBtn"
       class="w-full bg-pink-500 text-white py-4 rounded-2xl font-semibold">
@@ -61,7 +65,7 @@ export function resultWithFeedback(name) {
     <div class="soulmate-wrapper">
       <img src="./assets/images/soulmate.jpg" id="soulmateImg" class="soulmate-img"/>
       <canvas id="scratchCanvas"></canvas>
-      <div class="scratch-text">Scratch to reveal ✨</div>
+      <div class="scratch-text">Scratch or double tap to reveal ✨</div>
     </div>
 
     <div class="star-rating">
