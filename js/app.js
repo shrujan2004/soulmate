@@ -53,7 +53,50 @@ const questions = [
   { q: "What scares you in love?", o: ["Getting hurt 💔","Commitment 😬","Losing freedom 🕊️"] }
 ];
 
-window.onload = showIntro;
+window.onload = () => {
+  setupBackground();
+  showIntro();
+};
+
+function setupBackground() {
+  const root = document.documentElement;
+  let targetX = 50;
+  let targetY = 30;
+  let currentX = 50;
+  let currentY = 30;
+  let rafId = null;
+
+  function apply() {
+    currentX += (targetX - currentX) * 0.12;
+    currentY += (targetY - currentY) * 0.12;
+    root.style.setProperty("--bg-x", `${currentX}%`);
+    root.style.setProperty("--bg-y", `${currentY}%`);
+    rafId = requestAnimationFrame(apply);
+  }
+
+  function updateFromPoint(clientX, clientY) {
+    const { innerWidth, innerHeight } = window;
+    targetX = Math.min(100, Math.max(0, (clientX / innerWidth) * 100));
+    targetY = Math.min(100, Math.max(0, (clientY / innerHeight) * 100));
+    if (!rafId) {
+      rafId = requestAnimationFrame(apply);
+    }
+  }
+
+  window.addEventListener("mousemove", event => {
+    updateFromPoint(event.clientX, event.clientY);
+  });
+
+  window.addEventListener("touchmove", event => {
+    if (!event.touches?.length) return;
+    updateFromPoint(event.touches[0].clientX, event.touches[0].clientY);
+  }, { passive: true });
+
+  window.addEventListener("touchstart", event => {
+    if (!event.touches?.length) return;
+    updateFromPoint(event.touches[0].clientX, event.touches[0].clientY);
+  }, { passive: true });
+}
 
 /* ---------------- INTRO ---------------- */
 
@@ -130,53 +173,75 @@ function setupScratch() {
   const img = soulmateImg;
   const ctx = canvas.getContext("2d");
 
-  const r = img.getBoundingClientRect();
-  canvas.width = r.width;
-  canvas.height = r.height;
-
-  ctx.fillStyle = "#111";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.globalCompositeOperation = "destination-out";
-
   let scratching = false;
   let count = 0;
+  let revealed = false;
 
-  function pos(e) {
-    const b = canvas.getBoundingClientRect();
-    return e.touches
-      ? { x: e.touches[0].clientX - b.left, y: e.touches[0].clientY - b.top }
-      : { x: e.clientX - b.left, y: e.clientY - b.top };
+  function sizeCanvas() {
+    const r = img.getBoundingClientRect();
+    canvas.width = Math.max(1, Math.floor(r.width));
+    canvas.height = Math.max(1, Math.floor(r.height));
+    ctx.fillStyle = "#111";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.globalCompositeOperation = "destination-out";
   }
 
-  function scratch(e) {
-    if (!scratching) return;
-    const { x, y } = pos(e);
-    ctx.beginPath();
-    ctx.arc(x, y, 22, 0, Math.PI * 2);
-    ctx.fill();
-
-    if (++count > 120) {
-      canvas.remove();
-      img.classList.add("revealed");
+  function reveal() {
+    if (revealed) return;
+    revealed = true;
+    canvas.remove();
+    img.classList.add("revealed");
+    if (typeof revealBtn !== "undefined") {
+      revealBtn.remove();
+    }
+    if (typeof scratchText !== "undefined") {
+      scratchText.remove();
     }
   }
 
-  canvas.onmousedown = e => { scratching = true; scratch(e); };
-  canvas.onmousemove = scratch;
-  canvas.onmouseup = () => scratching = false;
-  canvas.onmouseleave = () => scratching = false;
+  function pos(e) {
+    const b = canvas.getBoundingClientRect();
+    if (e.touches?.length) {
+      return { x: e.touches[0].clientX - b.left, y: e.touches[0].clientY - b.top };
+    }
+    return { x: e.clientX - b.left, y: e.clientY - b.top };
+  }
 
-  canvas.addEventListener("touchstart", e => {
+  function scratch(e) {
+    if (!scratching || revealed) return;
+    const { x, y } = pos(e);
+    ctx.beginPath();
+    ctx.arc(x, y, 26, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (++count > 40) {
+      reveal();
+    }
+  }
+
+  function startScratch(e) {
     scratching = true;
     scratch(e);
-  }, { passive: false });
+  }
 
-  canvas.addEventListener("touchmove", e => {
-    e.preventDefault();
-    scratch(e);
-  }, { passive: false });
+  function stopScratch() {
+    scratching = false;
+  }
 
-  canvas.addEventListener("touchend", () => scratching = false);
+  img.addEventListener("load", sizeCanvas);
+  if (img.complete) sizeCanvas();
+  window.addEventListener("resize", sizeCanvas);
+
+  canvas.addEventListener("pointerdown", startScratch);
+  canvas.addEventListener("pointermove", scratch);
+  canvas.addEventListener("pointerup", stopScratch);
+  canvas.addEventListener("pointerleave", stopScratch);
+  canvas.addEventListener("dblclick", reveal);
+
+  canvas.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
+  if (typeof revealBtn !== "undefined") {
+    revealBtn.addEventListener("click", reveal);
+  }
 }
 
 /* ---------------- STARS ---------------- */
