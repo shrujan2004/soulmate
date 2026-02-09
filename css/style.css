@@ -3,18 +3,18 @@
 }
 
 body {
-  user-select: none;
   font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  user-select: none;
 }
 
 .fade {
-  animation: fadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: fadeIn 0.35s ease forwards;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(12px) scale(0.97);
+    transform: translateY(10px) scale(0.97);
   }
   to {
     opacity: 1;
@@ -28,7 +28,7 @@ body {
   border-radius: 14px;
   border: 1px solid #e5e7eb;
   background: #fafafa;
-  transition: all 0.25s ease;
+  transition: 0.25s ease;
 }
 
 .input:focus {
@@ -48,11 +48,5 @@ button:active {
 
 img, video {
   max-width: 100%;
-  display: block;
   border-radius: 16px;
-}
-
-video {
-  min-height: 200px;
-  background: #000;
 }

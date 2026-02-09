@@ -1,55 +1,48 @@
+function introScreen() {
+  return `
+    <h2 class="text-2xl font-bold text-center mb-6">
+      Soulmate Finder 💖
+    </h2>
+
+    <input id="nameInput" class="input mb-4" placeholder="Your name" />
+
+    <select id="ageInput" class="input mb-6">
+      <option value="">Your age</option>
+      ${Array.from({ length: 30 }, (_, i) => `<option>${18 + i}</option>`).join("")}
+    </select>
+
+    <button onclick="saveUserInfo()"
+      class="w-full bg-pink-500 text-white py-4 rounded-2xl font-semibold">
+      Continue ✨
+    </button>
+  `;
+}
+
 function searchingScreen() {
   return `
     <h2 class="text-xl font-bold text-center mb-4">
       Consulting destiny… 🌌
     </h2>
 
-    <!-- Skeleton Loader -->
-    <div id="videoSkeleton"
-      class="w-full h-48 rounded-2xl bg-gradient-to-r
-             from-gray-200 via-gray-300 to-gray-200
-             animate-pulse mb-4">
-    </div>
-
-    <!-- Video (hidden until ready) -->
-    <video
-      id="matchVideo"
-      playsinline
-      preload="auto"
-      class="mx-auto mb-3 hidden rounded-2xl">
+    <video id="matchVideo" playsinline preload="auto">
       <source src="assets/videos/heaven.mp4" type="video/mp4">
     </video>
 
-    <p id="videoStatus"
-      class="text-center text-sm opacity-70">
-      Accessing heavenly records…
-    </p>
-  `;
-}
-
-function matchmakingScreen() {
-  return `
-    <h2 class="text-xl font-bold text-center mb-3">
-      Finalizing match… 💖
-    </h2>
-
-    <p id="dialogueText"
-      class="text-center text-sm opacity-80">
-      Prabhu… aapne toh kaha tha ye single maregi…
+    <p id="videoStatus" class="text-center text-sm mt-3 opacity-70">
+      Loading heavenly records…
     </p>
   `;
 }
 
 function resultScreen(name) {
   return `
-    <h2 class="text-2xl font-extrabold text-center mb-4 text-pink-600">
+    <h2 class="text-2xl font-bold text-center text-pink-600 mb-4">
       ${name}, this is your soulmate 💖
     </h2>
 
-    <img src="assets/images/soulmate.jpg"
-      class="mx-auto mb-4 rounded-2xl" />
+    <img src="assets/images/soulmate.jpg" class="mx-auto mb-4" />
 
-    <p class="text-center font-semibold text-lg">
+    <p class="text-center font-semibold">
       99.8% compatibility 😌<br>
       Destiny never lies.
     </p>

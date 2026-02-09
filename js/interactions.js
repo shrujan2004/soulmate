@@ -6,7 +6,3 @@ function render(html) {
   void app.offsetWidth;
   app.classList.add("fade");
 }
-
-function vibrate(ms = 30) {
-  navigator.vibrate?.(ms);
-}
