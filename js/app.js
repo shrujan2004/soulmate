@@ -10,8 +10,21 @@ let answers = {};
 const questions = [
   { q: "Your ideal vibe?", o: ["Soft 🫶","Bold 😎","Funny 😂"] },
   { q: "Weekend?", o: ["Netflix 🍿","Party 🕺","Sleep 😴"] },
-  { q: "Late night mood?", o: ["Overthinking 🌙","Music 🎧","Reels 📱"] }
+  { q: "Late night mood?", o: ["Overthinking 🌙","Music 🎧","Reels 📱"] },
+
+  // 🔥 ADD THESE BELOW
+  { q: "First thing you notice in someone?", o: ["Eyes 👀","Smile 😄","Confidence 😎"] },
+  { q: "Your toxic trait?", o: ["Overthinking 🧠","Ghosting 👻","Jealous 😤"] },
+  { q: "Biggest turn-on?", o: ["Respect 🙏","Humor 😂","Ambition 🔥"] },
+  { q: "Ideal first date?", o: ["Coffee ☕","Long drive 🚗","Movie 🍿"] },
+  { q: "How do you handle fights?", o: ["Silent 😶","Talk it out 🗣️","Ignore 🚶"] },
+  { q: "Most used app at night?", o: ["Instagram 📱","Spotify 🎧","YouTube ▶️"] },
+  { q: "Your love language?", o: ["Time ⏳","Words 💬","Gifts 🎁"] },
+  { q: "Relationship status energy?", o: ["Hopeless romantic 💖","Chill 😌","Emotionally unavailable 🧱"] },
+  { q: "Red flag you ignore?", o: ["Late replies ⏰","Mood swings 🌪️","Too secretive 🕵️"] },
+  { q: "What scares you in love?", o: ["Getting hurt 💔","Commitment 😬","Losing freedom 🕊️"] }
 ];
+
 
 window.onload = showIntro;
 
