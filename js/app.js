@@ -74,7 +74,7 @@ function setupWebglBackground() {
     }
   `;
   const fragmentSrc = `
-    precision mediump float;
+    precision highp float;
     uniform vec2 uResolution;
     uniform float uTime;
     uniform vec2 uPointer;
@@ -92,13 +92,13 @@ function setupWebglBackground() {
       vec2 p = uv - 0.5;
       p.x *= uResolution.x / uResolution.y;
 
-      float swirl = sin((p.x + uPointer.x) * 6.0 + uTime * 0.4)
-        + cos((p.y + uPointer.y) * 6.0 - uTime * 0.35);
-      float glow = exp(-length(p + uPointer) * 3.0);
-      float t = swirl * 0.15 + glow * 0.6 + uTime * 0.02;
+      float dist = length(p + uPointer * 0.7);
+      float glow = smoothstep(0.8, 0.0, dist);
+      float waves = sin((p.x + p.y + uPointer.x * 0.6) * 3.5 + uTime * 0.5) * 0.5 + 0.5;
+      float t = mix(waves, glow, 0.7) + uTime * 0.02;
       vec3 color = palette(t);
-      color += glow * vec3(0.6, 0.2, 0.8);
-      gl_FragColor = vec4(color, 0.45);
+      color = mix(color, vec3(1.0, 0.7, 0.95), glow * 0.4);
+      gl_FragColor = vec4(color, 0.35);
     }
   `;
 
@@ -138,7 +138,7 @@ function setupWebglBackground() {
 
   function resize() {
     const { innerWidth, innerHeight, devicePixelRatio } = window;
-    const scale = Math.min(devicePixelRatio || 1, 2);
+    const scale = Math.min(devicePixelRatio || 1, 2.5);
     canvas.width = innerWidth * scale;
     canvas.height = innerHeight * scale;
     gl.viewport(0, 0, canvas.width, canvas.height);

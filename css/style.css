@@ -36,7 +36,9 @@ body::before {
   z-index: 0;
   pointer-events: none;
   mix-blend-mode: screen;
-  opacity: .7;
+  opacity: .6;
+  transform: translateZ(0);
+  image-rendering: auto;
 }
 
 #app {
