@@ -1,11 +1,27 @@
 import { render } from "./interactions.js";
 import {
-  introScreen, questionScreen, searchingScreen, resultWithFeedback
+  introScreen,
+  questionScreen,
+  searchingScreen,
+  resultWithFeedback
 } from "./screens.js";
 import { saveUser, saveFeedback } from "./firebase.js";
 
-let userName="", userAge="", userState="", qIndex=0, rating=0;
+let userName = "";
+let userAge = "";
+let userState = "";
+let qIndex = 0;
+let rating = 0;
 let answers = {};
+
+// 🔥 SOUTH INDIA STATES
+const southStates = [
+  "Karnataka",
+  "Kerala",
+  "Tamil Nadu",
+  "Telangana",
+  "Andhra Pradesh"
+];
 
 const questions = [
   { q: "Your ideal vibe?", o: ["Soft 🫶","Bold 😎","Funny 😂"] },
@@ -25,7 +41,6 @@ const questions = [
   { q: "What scares you in love?", o: ["Getting hurt 💔","Commitment 😬","Losing freedom 🕊️"] }
 ];
 
-
 window.onload = showIntro;
 
 function showIntro() {
@@ -42,7 +57,11 @@ function setupDropdown(id,labelId,inputId){
 
   d.querySelector(".dropdown-btn").onclick=()=>d.classList.toggle("open");
   d.querySelectorAll(".dropdown-item").forEach(i=>{
-    i.onclick=()=>{ label.textContent=i.textContent; hidden.value=i.textContent; d.classList.remove("open"); }
+    i.onclick=()=>{
+      label.textContent=i.textContent;
+      hidden.value=i.textContent;
+      d.classList.remove("open");
+    };
   });
 }
 
@@ -50,8 +69,15 @@ function startFlow(){
   userName=nameInput.value;
   userAge=ageInput.value;
   userState=stateInput.value;
-  if(!userName||!userAge||!userState) return alert("Fill all details 😌");
-  qIndex=0; answers={}; showQuestion();
+
+  if(!userName||!userAge||!userState){
+    alert("Fill all details 😌");
+    return;
+  }
+
+  qIndex=0;
+  answers={};
+  showQuestion();
 }
 
 function showQuestion(){
@@ -65,25 +91,53 @@ function showQuestion(){
 }
 
 function showVideo(){
+  // 🔥 DECIDE VIDEO BASED ON STATE
+  const isSouth = southStates.includes(userState);
+  const videoSrc = isSouth
+    ? "./assets/videos/south.mp4"
+    : "./assets/videos/heaven.mp4";
+
   render(searchingScreen(userState));
-  videoTapBtn.onclick=()=>{ videoTapBtn.style.display="none"; matchVideo.muted=false; matchVideo.play(); };
-  matchVideo.onended=showResult;
+
+  const video = document.getElementById("matchVideo");
+  const tapBtn = document.getElementById("videoTapBtn");
+
+  // 🔥 SET VIDEO SOURCE DYNAMICALLY
+  video.src = videoSrc;
+  video.load();
+
+  tapBtn.onclick = () => {
+    tapBtn.style.display="none";
+    video.muted=false;
+    video.play();
+  };
+
+  video.onended = showResult;
 }
 
 function showResult(){
   saveUser(userName,userAge,userState,answers).catch(()=>{});
   render(resultWithFeedback(userName));
+
+  rating = 0;
   document.querySelectorAll(".star").forEach(s=>{
     s.onclick=()=>{
       rating=+s.dataset.value;
-      document.querySelectorAll(".star").forEach(x=>x.classList.toggle("active",+x.dataset.value<=rating));
+      document.querySelectorAll(".star").forEach(x=>{
+        x.classList.toggle("active",+x.dataset.value<=rating);
+      });
     };
   });
-  submitFeedbackBtn.onclick=submitFeedback;
+
+  submitFeedbackBtn.onclick = submitFeedback;
 }
 
 function submitFeedback(){
-  if(!feedbackInput.value||!rating) return alert("Give rating & feedback 😇");
+  if(!feedbackInput.value || !rating){
+    alert("Give rating & feedback 😇");
+    return;
+  }
+
   saveFeedback(userName,userAge,feedbackInput.value,rating).catch(()=>{});
   alert("Thanks 💖");
 }
