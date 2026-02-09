@@ -19,13 +19,11 @@ const questions = [
   { q: "Turn-on?", o: ["Respect 🙏", "Humor 😄", "Ambition 🔥"] }
 ];
 
-window.addEventListener("DOMContentLoaded", () => {
-  showIntro();
-});
+window.addEventListener("DOMContentLoaded", showIntro);
 
 function showIntro() {
   render(introScreen());
-  document.getElementById("continueBtn").onclick = handleContinue;
+  document.getElementById("continueBtn").addEventListener("click", handleContinue);
 }
 
 async function handleContinue() {
@@ -44,9 +42,9 @@ async function handleContinue() {
 
 function showQuestion() {
   render(questionScreen(questions[qIndex].q, questions[qIndex].o));
-  document.querySelectorAll(".optionBtn").forEach(btn => {
-    btn.onclick = nextQuestion;
-  });
+  document.querySelectorAll(".optionBtn").forEach(btn =>
+    btn.addEventListener("click", nextQuestion)
+  );
 }
 
 function nextQuestion() {
@@ -64,19 +62,19 @@ function showVideo() {
   const video = document.getElementById("matchVideo");
   const btn = document.getElementById("videoTapBtn");
 
-  btn.onclick = () => {
+  btn.addEventListener("click", () => {
     btn.style.display = "none";
     video.muted = false;
     video.volume = 0.9;
     video.play();
-  };
+  });
 
-  video.onended = showFeedback;
+  video.addEventListener("ended", showFeedback);
 }
 
 function showFeedback() {
   render(feedbackScreen());
-  document.getElementById("submitFeedbackBtn").onclick = submitFeedback;
+  document.getElementById("submitFeedbackBtn").addEventListener("click", submitFeedback);
 }
 
 async function submitFeedback() {

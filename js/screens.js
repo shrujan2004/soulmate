@@ -1,8 +1,11 @@
 export function introScreen() {
   return `
-    <h2 class="text-2xl font-bold text-center mb-6">Soulmate Finder 💖</h2>
+    <h2 class="text-2xl font-bold text-center mb-6">
+      Soulmate Finder 💖
+    </h2>
 
     <input id="nameInput" class="input mb-4" placeholder="Your name" />
+
     <select id="ageInput" class="input mb-6">
       <option value="">Your age</option>
       ${Array.from({ length: 30 }, (_, i) => `<option>${18+i}</option>`).join("")}
@@ -29,7 +32,9 @@ export function questionScreen(q, options) {
 
 export function searchingScreen() {
   return `
-    <h2 class="text-xl font-bold text-center mb-4">Consulting destiny… 🌌</h2>
+    <h2 class="text-xl font-bold text-center mb-4">
+      Consulting destiny… 🌌
+    </h2>
 
     <div class="relative">
       <video id="matchVideo" muted playsinline preload="auto">

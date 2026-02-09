@@ -5,15 +5,6 @@ body {
   user-select: none;
 }
 
-.fade {
-  animation: fadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
 .input {
   width: 100%;
   padding: 14px 16px;
@@ -26,11 +17,13 @@ body {
   outline: none;
   border-color: #ec4899;
   background: #fff;
-  box-shadow: 0 10px 25px rgba(236,72,153,.15);
 }
 
-button:active { transform: scale(.96); }
+button:active {
+  transform: scale(0.96);
+}
 
-img, video { max-width: 100%; border-radius: 16px; }
-
-video { background: black; }
+img, video {
+  max-width: 100%;
+  border-radius: 16px;
+}
