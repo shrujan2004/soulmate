@@ -1,11 +1,10 @@
 * {
-  -webkit-tap-highlight-color: transparent;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   font-family: system-ui, -apple-system;
-  user-select: none;
 }
 
 .input {
@@ -20,7 +19,6 @@ body {
   outline: none;
   border-color: #ec4899;
   background: #fff;
-  box-shadow: 0 10px 25px rgba(236,72,153,.15);
 }
 
 button {
@@ -32,6 +30,6 @@ button:active {
 }
 
 img, video {
-  max-width: 100%;
+  width: 100%;
   border-radius: 16px;
 }

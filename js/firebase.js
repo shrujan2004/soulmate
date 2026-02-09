@@ -25,3 +25,13 @@ export function saveUser(name, age) {
     createdAt: serverTimestamp()
   });
 }
+
+export function saveFeedback(name, age, feedback, rating) {
+  return addDoc(collection(db, "feedback"), {
+    name,
+    age,
+    feedback,
+    rating,
+    createdAt: serverTimestamp()
+  });
+}

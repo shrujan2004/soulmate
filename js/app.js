@@ -3,9 +3,9 @@ import {
   introScreen,
   questionScreen,
   searchingScreen,
-  resultScreen
+  resultWithFeedback
 } from "./screens.js";
-import { saveUser } from "./firebase.js";
+import { saveUser, saveFeedback } from "./firebase.js";
 
 let userName = "";
 let userAge = "";
@@ -21,9 +21,7 @@ window.addEventListener("DOMContentLoaded", showIntro);
 
 function showIntro() {
   render(introScreen());
-  document
-    .getElementById("continueBtn")
-    .addEventListener("click", handleContinue);
+  document.getElementById("continueBtn").onclick = handleContinue;
 }
 
 function handleContinue() {
@@ -35,10 +33,8 @@ function handleContinue() {
     return;
   }
 
-  // 🔥 FIRE & FORGET (DO NOT BLOCK UI)
-  saveUser(userName, userAge)
-    .then(() => console.log("User saved"))
-    .catch(err => console.warn("Firebase skipped:", err));
+  // fire-and-forget
+  saveUser(userName, userAge).catch(() => {});
 
   qIndex = 0;
   showQuestion();
@@ -46,19 +42,14 @@ function handleContinue() {
 
 function showQuestion() {
   render(questionScreen(questions[qIndex].q, questions[qIndex].o));
-
   document.querySelectorAll(".optionBtn").forEach(btn =>
-    btn.addEventListener("click", nextQuestion)
+    btn.onclick = nextQuestion
   );
 }
 
 function nextQuestion() {
   qIndex++;
-  if (qIndex < questions.length) {
-    showQuestion();
-  } else {
-    showVideo();
-  }
+  qIndex < questions.length ? showQuestion() : showVideo();
 }
 
 function showVideo() {
@@ -67,14 +58,29 @@ function showVideo() {
   const video = document.getElementById("matchVideo");
   const btn = document.getElementById("videoTapBtn");
 
-  btn.addEventListener("click", () => {
+  btn.onclick = () => {
     btn.style.display = "none";
     video.muted = false;
-    video.volume = 0.9;
     video.play();
-  });
+  };
 
-  video.addEventListener("ended", () => {
-    render(resultScreen(userName));
-  });
+  video.onended = showResult;
+}
+
+function showResult() {
+  render(resultWithFeedback(userName));
+  document.getElementById("submitFeedbackBtn").onclick = submitFeedback;
+}
+
+function submitFeedback() {
+  const feedback = document.getElementById("feedbackInput").value;
+  const rating = document.getElementById("ratingInput").value;
+
+  if (!feedback || !rating) {
+    alert("Please give feedback 😇");
+    return;
+  }
+
+  saveFeedback(userName, userAge, feedback, rating).catch(() => {});
+  alert("Thanks! 💖");
 }

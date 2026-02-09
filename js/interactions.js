@@ -1,4 +1,3 @@
 export function render(html) {
-  const app = document.getElementById("app");
-  app.innerHTML = html;
+  document.getElementById("app").innerHTML = html;
 }
