@@ -17,14 +17,37 @@ const questions = [
   { q: "Your ideal vibe?", o: ["Soft 🫶", "Bold 😎", "Funny 😂"] },
   { q: "Attracted to?", o: ["Eyes 👀", "Mind 🧠", "Body 💪"] },
   { q: "Weekend?", o: ["Netflix 🍿", "Party 🕺", "Sleep 😴"] },
-  { q: "Biggest green flag?", o: ["Respect 🙏", "Loyalty 💍", "Ambition 🔥"] },
   { q: "Late night mood?", o: ["Overthinking 🌙", "Music 🎧", "Reels 📱"] }
 ];
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", showIntro);
+
+function showIntro() {
   render(introScreen());
+  setupStateDropdown();
   document.getElementById("continueBtn").onclick = startFlow;
-});
+}
+
+function setupStateDropdown() {
+  const dropdown = document.getElementById("stateDropdown");
+  const btn = document.getElementById("stateBtn");
+  const label = document.getElementById("stateLabel");
+  const hidden = document.getElementById("stateInput");
+
+  btn.onclick = () => dropdown.classList.toggle("open");
+
+  dropdown.querySelectorAll(".dropdown-item").forEach(item => {
+    item.onclick = () => {
+      label.textContent = item.textContent;
+      hidden.value = item.textContent;
+      dropdown.classList.remove("open");
+    };
+  });
+
+  document.addEventListener("click", e => {
+    if (!dropdown.contains(e.target)) dropdown.classList.remove("open");
+  });
+}
 
 function startFlow() {
   userName = nameInput.value;
@@ -54,13 +77,12 @@ function showQuestion() {
 
 function showVideo() {
   render(searchingScreen(userState));
-  const video = matchVideo;
   videoTapBtn.onclick = () => {
     videoTapBtn.style.display = "none";
-    video.muted = false;
-    video.play();
+    matchVideo.muted = false;
+    matchVideo.play();
   };
-  video.onended = showResult;
+  matchVideo.onended = showResult;
 }
 
 function showResult() {

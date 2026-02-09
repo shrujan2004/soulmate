@@ -1,4 +1,10 @@
 export function introScreen() {
+  const states = [
+    "Andhra Pradesh","Assam","Bihar","Chandigarh","Delhi","Gujarat",
+    "Karnataka","Kerala","Maharashtra","Punjab","Rajasthan",
+    "Tamil Nadu","Telangana","Uttar Pradesh","West Bengal"
+  ];
+
   return `
     <h2 class="text-2xl font-bold text-center mb-6">
       Soulmate Finder 💖
@@ -11,24 +17,18 @@ export function introScreen() {
       ${Array.from({ length: 30 }, (_, i) => `<option>${18 + i}</option>`).join("")}
     </select>
 
-    <select id="stateInput" class="input dropdown-animate mb-6">
-      <option value="">Your state</option>
-      <option>Andhra Pradesh</option>
-      <option>Assam</option>
-      <option>Bihar</option>
-      <option>Chandigarh</option>
-      <option>Delhi</option>
-      <option>Gujarat</option>
-      <option>Karnataka</option>
-      <option>Kerala</option>
-      <option>Maharashtra</option>
-      <option>Punjab</option>
-      <option>Rajasthan</option>
-      <option>Tamil Nadu</option>
-      <option>Telangana</option>
-      <option>Uttar Pradesh</option>
-      <option>West Bengal</option>
-    </select>
+    <!-- 🚀 Custom dropdown -->
+    <div class="dropdown mb-6" id="stateDropdown">
+      <div class="dropdown-btn" id="stateBtn">
+        <span id="stateLabel">Select your state</span>
+        <span>⌄</span>
+      </div>
+      <div class="dropdown-list">
+        ${states.map(s => `<div class="dropdown-item">${s}</div>`).join("")}
+      </div>
+    </div>
+
+    <input type="hidden" id="stateInput" />
 
     <button id="continueBtn"
       class="w-full bg-pink-500 text-white py-4 rounded-2xl font-semibold">
@@ -42,7 +42,7 @@ export function questionScreen(q, options) {
     <h2 class="text-xl font-bold text-center mb-5">${q}</h2>
     <div class="grid gap-3">
       ${options.map(o => `
-        <button class="optionBtn border rounded-2xl p-4 hover:bg-pink-50">
+        <button class="optionBtn border rounded-2xl p-4">
           ${o}
         </button>
       `).join("")}
@@ -80,10 +80,6 @@ export function resultWithFeedback(name) {
     </h2>
 
     <img src="./assets/images/soulmate.jpg" class="mb-4" />
-
-    <p class="text-center font-semibold mb-6">
-      99.8% compatibility 😌
-    </p>
 
     <textarea id="feedbackInput" class="input mb-3"
       placeholder="Was this fun? 😂"></textarea>
