@@ -130,53 +130,66 @@ function setupScratch() {
   const img = soulmateImg;
   const ctx = canvas.getContext("2d");
 
-  const r = img.getBoundingClientRect();
-  canvas.width = r.width;
-  canvas.height = r.height;
-
-  ctx.fillStyle = "#111";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.globalCompositeOperation = "destination-out";
-
   let scratching = false;
   let count = 0;
+  let revealed = false;
+
+  function sizeCanvas() {
+    const r = img.getBoundingClientRect();
+    canvas.width = Math.max(1, Math.floor(r.width));
+    canvas.height = Math.max(1, Math.floor(r.height));
+    ctx.fillStyle = "#111";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.globalCompositeOperation = "destination-out";
+  }
+
+  function reveal() {
+    if (revealed) return;
+    revealed = true;
+    canvas.remove();
+    img.classList.add("revealed");
+  }
 
   function pos(e) {
     const b = canvas.getBoundingClientRect();
-    return e.touches
-      ? { x: e.touches[0].clientX - b.left, y: e.touches[0].clientY - b.top }
-      : { x: e.clientX - b.left, y: e.clientY - b.top };
+    if (e.touches?.length) {
+      return { x: e.touches[0].clientX - b.left, y: e.touches[0].clientY - b.top };
+    }
+    return { x: e.clientX - b.left, y: e.clientY - b.top };
   }
 
   function scratch(e) {
-    if (!scratching) return;
+    if (!scratching || revealed) return;
     const { x, y } = pos(e);
     ctx.beginPath();
-    ctx.arc(x, y, 22, 0, Math.PI * 2);
+    ctx.arc(x, y, 26, 0, Math.PI * 2);
     ctx.fill();
 
-    if (++count > 120) {
-      canvas.remove();
-      img.classList.add("revealed");
+    if (++count > 40) {
+      reveal();
     }
   }
 
-  canvas.onmousedown = e => { scratching = true; scratch(e); };
-  canvas.onmousemove = scratch;
-  canvas.onmouseup = () => scratching = false;
-  canvas.onmouseleave = () => scratching = false;
-
-  canvas.addEventListener("touchstart", e => {
+  function startScratch(e) {
     scratching = true;
     scratch(e);
-  }, { passive: false });
+  }
 
-  canvas.addEventListener("touchmove", e => {
-    e.preventDefault();
-    scratch(e);
-  }, { passive: false });
+  function stopScratch() {
+    scratching = false;
+  }
 
-  canvas.addEventListener("touchend", () => scratching = false);
+  img.addEventListener("load", sizeCanvas);
+  if (img.complete) sizeCanvas();
+  window.addEventListener("resize", sizeCanvas);
+
+  canvas.addEventListener("pointerdown", startScratch);
+  canvas.addEventListener("pointermove", scratch);
+  canvas.addEventListener("pointerup", stopScratch);
+  canvas.addEventListener("pointerleave", stopScratch);
+  canvas.addEventListener("dblclick", reveal);
+
+  canvas.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
 }
 
 /* ---------------- STARS ---------------- */
