@@ -8,7 +8,7 @@ export function introScreen() {
 
     <select id="ageInput" class="input mb-6">
       <option value="">Your age</option>
-      ${Array.from({ length: 30 }, (_, i) => `<option>${18+i}</option>`).join("")}
+      ${Array.from({ length: 30 }, (_, i) => `<option>${18 + i}</option>`).join("")}
     </select>
 
     <button id="continueBtn"
@@ -25,7 +25,8 @@ export function questionScreen(q, options) {
       ${options.map(o => `
         <button class="optionBtn border rounded-2xl p-4 hover:bg-pink-50">
           ${o}
-        </button>`).join("")}
+        </button>
+      `).join("")}
     </div>
   `;
 }
@@ -38,7 +39,7 @@ export function searchingScreen() {
 
     <div class="relative">
       <video id="matchVideo" muted playsinline preload="auto">
-        <source src="assets/videos/heaven.mp4" type="video/mp4">
+        <source src="./assets/videos/heaven.mp4" type="video/mp4">
       </video>
 
       <button id="videoTapBtn"
@@ -49,31 +50,16 @@ export function searchingScreen() {
   `;
 }
 
-export function feedbackScreen() {
-  return `
-    <h2 class="text-xl font-bold text-center mb-4">Quick feedback 😇</h2>
-
-    <textarea id="feedbackInput" class="input mb-4" placeholder="Was this fun? 😂"></textarea>
-
-    <select id="ratingInput" class="input mb-4">
-      <option value="">Rating</option>
-      <option>⭐</option><option>⭐⭐</option><option>⭐⭐⭐</option>
-      <option>⭐⭐⭐⭐</option><option>⭐⭐⭐⭐⭐</option>
-    </select>
-
-    <button id="submitFeedbackBtn"
-      class="w-full bg-pink-500 text-white py-4 rounded-2xl">
-      Submit 💌
-    </button>
-  `;
-}
-
 export function resultScreen(name) {
   return `
     <h2 class="text-2xl font-bold text-center text-pink-600 mb-4">
       ${name}, this is your soulmate 💖
     </h2>
-    <img src="assets/images/soulmate.jpg" class="mx-auto mb-4" />
-    <p class="text-center font-semibold">99.8% compatibility 😌</p>
+
+    <img src="./assets/images/soulmate.jpg" class="mx-auto mb-4" />
+
+    <p class="text-center font-semibold">
+      99.8% compatibility 😌
+    </p>
   `;
 }

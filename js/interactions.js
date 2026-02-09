@@ -1,4 +1,4 @@
 export function render(html) {
-  const appDiv = document.getElementById("app");
-  appDiv.innerHTML = html;
+  const app = document.getElementById("app");
+  app.innerHTML = html;
 }
