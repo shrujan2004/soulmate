@@ -5,12 +5,47 @@
 
 body {
   font-family: Inter, system-ui;
-  background: radial-gradient(circle at top, #ffd6e8, #c084fc);
+  background:
+    radial-gradient(circle at var(--bg-x, 50%) var(--bg-y, 30%), rgba(255,255,255,.9), rgba(255,214,232,.65) 35%, rgba(192,132,252,.65) 70%),
+    radial-gradient(circle at 20% 80%, rgba(56,189,248,.35), transparent 55%),
+    linear-gradient(160deg, rgba(15,23,42,.2), rgba(124,58,237,.25));
+  background-attachment: fixed;
+  transition: background-position .15s ease;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  background:
+    radial-gradient(circle at var(--bg-x, 50%) var(--bg-y, 30%), rgba(236,72,153,.25), transparent 55%),
+    radial-gradient(circle at calc(100% - var(--bg-x, 50%)) calc(100% - var(--bg-y, 30%)), rgba(124,58,237,.25), transparent 55%);
+  filter: blur(20px);
+  opacity: .8;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: .7;
 }
 
 #app {
+  position: relative;
+  z-index: 1;
   background: rgba(255,255,255,.85);
   backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,.4);
+  box-shadow: 0 25px 60px rgba(124,58,237,.25);
 }
 
 /* Inputs */
@@ -26,6 +61,72 @@ body {
   outline: none;
   border-color: #ec4899;
   box-shadow: 0 0 0 3px rgba(236,72,153,.25);
+}
+
+/* Select */
+.select-wrapper {
+  position: relative;
+  isolation: isolate;
+}
+
+.select-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 18px;
+  background: conic-gradient(
+    from 210deg,
+    rgba(236,72,153,.0),
+    rgba(236,72,153,.7),
+    rgba(124,58,237,.8),
+    rgba(56,189,248,.7),
+    rgba(236,72,153,.0)
+  );
+  filter: blur(10px);
+  opacity: .6;
+  z-index: -1;
+}
+
+.select-wrapper:hover::before,
+.select-wrapper:focus-within::before {
+  opacity: .95;
+  filter: blur(14px);
+}
+
+.select-field {
+  appearance: none;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.9), rgba(235,228,255,.75)),
+    radial-gradient(circle at top left, rgba(236,72,153,.25), transparent 55%);
+  border: 1px solid rgba(124,58,237,.55);
+  box-shadow: 0 12px 30px rgba(124,58,237,.25), inset 0 0 0 1px rgba(255,255,255,.55);
+  color: #1f0b3a;
+  font-weight: 600;
+  letter-spacing: .2px;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.select-field:hover {
+  border-color: rgba(236,72,153,.65);
+  box-shadow: 0 14px 28px rgba(236,72,153,.28), inset 0 0 0 1px rgba(255,255,255,.55);
+  transform: translateY(-1px);
+}
+
+.select-field:focus {
+  border-color: rgba(236,72,153,.9);
+  box-shadow: 0 0 0 3px rgba(236,72,153,.2), 0 16px 32px rgba(236,72,153,.25);
+}
+
+.select-wrapper::after {
+  content: "⌄";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #f472b6;
+  pointer-events: none;
+  font-size: 20px;
+  text-shadow: 0 0 12px rgba(236,72,153,.8);
 }
 
 /* Options */
@@ -86,6 +187,7 @@ img, video {
   inset: 0;
   background: #111;
   touch-action: none;
+  cursor: pointer;
 }
 
 .scratch-text {
@@ -94,7 +196,22 @@ img, video {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-weight: 600;
-  pointer-events: none;
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 0 12px rgba(236,72,153,.6);
+}
+
+.reveal-btn {
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(236,72,153,.95), rgba(124,58,237,.95));
+  border: 1px solid rgba(255,255,255,.4);
+  box-shadow: 0 10px 25px rgba(236,72,153,.35);
+  transition: transform .2s ease, box-shadow .2s ease;
+  cursor: pointer;
+}
+
+.reveal-btn:hover {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 14px 28px rgba(236,72,153,.45);
 }
