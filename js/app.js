@@ -21,10 +21,12 @@ window.addEventListener("DOMContentLoaded", showIntro);
 
 function showIntro() {
   render(introScreen());
-  document.getElementById("continueBtn").addEventListener("click", handleContinue);
+  document
+    .getElementById("continueBtn")
+    .addEventListener("click", handleContinue);
 }
 
-async function handleContinue() {
+function handleContinue() {
   userName = document.getElementById("nameInput").value;
   userAge = document.getElementById("ageInput").value;
 
@@ -33,13 +35,18 @@ async function handleContinue() {
     return;
   }
 
-  await saveUser(userName, userAge);
+  // 🔥 FIRE & FORGET (DO NOT BLOCK UI)
+  saveUser(userName, userAge)
+    .then(() => console.log("User saved"))
+    .catch(err => console.warn("Firebase skipped:", err));
+
   qIndex = 0;
   showQuestion();
 }
 
 function showQuestion() {
   render(questionScreen(questions[qIndex].q, questions[qIndex].o));
+
   document.querySelectorAll(".optionBtn").forEach(btn =>
     btn.addEventListener("click", nextQuestion)
   );
