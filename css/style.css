@@ -7,8 +7,9 @@ body {
   user-select: none;
 }
 
+/* Smooth screen transition */
 .fade {
-  animation: fadeIn 0.35s ease forwards;
+  animation: fadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes fadeIn {
@@ -22,6 +23,7 @@ body {
   }
 }
 
+/* Inputs */
 .input {
   width: 100%;
   padding: 14px 16px;
@@ -35,4 +37,24 @@ body {
   outline: none;
   border-color: #ec4899;
   background: #fff;
-  box-shadow: 0 10px 25px rgba(236,
+  box-shadow: 0 10px 25px rgba(236, 72, 153, 0.15);
+}
+
+/* Buttons */
+button {
+  transition: transform 0.15s ease;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+/* Media */
+img, video {
+  max-width: 100%;
+  border-radius: 16px;
+}
+
+video {
+  background: #000;
+}

@@ -41,12 +41,28 @@ function searchingScreen() {
       Consulting destiny… 🌌
     </h2>
 
-    <video id="matchVideo" playsinline preload="auto">
-      <source src="assets/videos/heaven.mp4" type="video/mp4">
-    </video>
+    <div class="relative">
+      <video
+        id="matchVideo"
+        muted
+        playsinline
+        preload="auto"
+        class="w-full rounded-2xl">
+        <source src="assets/videos/heaven.mp4" type="video/mp4">
+      </video>
+
+      <!-- TAP OVERLAY FOR MOBILE -->
+      <button
+        id="videoTapBtn"
+        onclick="startVideoFromTap()"
+        class="absolute inset-0 flex items-center justify-center
+               bg-black/50 text-white text-lg font-semibold rounded-2xl">
+        Tap to continue 🔊
+      </button>
+    </div>
 
     <p id="videoStatus" class="text-center text-sm mt-3 opacity-70">
-      Loading heavenly records…
+      Destiny is preparing something…
     </p>
   `;
 }

@@ -1,5 +1,3 @@
-console.log("APP LOADED");
-
 window.addEventListener("DOMContentLoaded", () => {
   render(introScreen());
 });
@@ -8,34 +6,22 @@ let userName = "";
 let qIndex = 0;
 
 const questions = [
-  {
-    q: "Your ideal vibe?",
-    o: ["Soft & caring 🫶", "Bold & confident 😎", "Funny & chill 😂"]
-  },
-  {
-    q: "What attracts you first?",
-    o: ["Eyes 👀", "Personality 🧠", "Body 💪"]
-  },
-  {
-    q: "Perfect weekend?",
-    o: ["Netflix & chill 🍿", "Party all night 🕺", "Sleep 😴"]
-  },
-  {
-    q: "Biggest turn-on?",
-    o: ["Respect 🙏", "Humor 😄", "Ambition 🔥"]
-  }
+  { q: "Your ideal vibe?", o: ["Soft 🫶", "Bold 😎", "Funny 😂"] },
+  { q: "What attracts you first?", o: ["Eyes 👀", "Mind 🧠", "Body 💪"] },
+  { q: "Perfect weekend?", o: ["Netflix 🍿", "Party 🕺", "Sleep 😴"] },
+  { q: "Biggest turn-on?", o: ["Respect 🙏", "Humor 😄", "Ambition 🔥"] }
 ];
 
 function saveUserInfo() {
-  const nameEl = document.getElementById("nameInput");
-  const ageEl = document.getElementById("ageInput");
+  const name = document.getElementById("nameInput").value;
+  const age = document.getElementById("ageInput").value;
 
-  if (!nameEl.value || !ageEl.value) {
-    alert("Please fill all details 😌");
+  if (!name || !age) {
+    alert("Fill all details 😌");
     return;
   }
 
-  userName = nameEl.value;
+  userName = name;
   qIndex = 0;
   showQuestion();
 }
@@ -49,22 +35,22 @@ function nextQuestion() {
   if (qIndex < questions.length) {
     showQuestion();
   } else {
-    startVideo();
+    render(searchingScreen());
   }
 }
 
-function startVideo() {
-  render(searchingScreen());
-
+/* 🔊 USER TAP = VIDEO + SOUND (MOBILE SAFE) */
+function startVideoFromTap() {
   const video = document.getElementById("matchVideo");
+  const btn = document.getElementById("videoTapBtn");
   const status = document.getElementById("videoStatus");
 
-  video.volume = 0.9;
+  btn.style.display = "none";
+  status.innerText = "Consulting Prabhu… 😇";
 
-  video.addEventListener("canplay", () => {
-    status.innerText = "Consulting Prabhu… 😇";
-    video.play();
-  });
+  video.muted = false;
+  video.volume = 0.9;
+  video.play();
 
   video.addEventListener("ended", () => {
     render(resultScreen(userName));
