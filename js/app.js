@@ -20,10 +20,15 @@ const questions = [
 ];
 
 window.addEventListener("DOMContentLoaded", () => {
-  render(introScreen());
+  showIntro();
 });
 
-window.saveUserInfo = async function () {
+function showIntro() {
+  render(introScreen());
+  document.getElementById("continueBtn").onclick = handleContinue;
+}
+
+async function handleContinue() {
   userName = document.getElementById("nameInput").value;
   userAge = document.getElementById("ageInput").value;
 
@@ -34,38 +39,55 @@ window.saveUserInfo = async function () {
 
   await saveUser(userName, userAge);
   qIndex = 0;
-  render(questionScreen(questions[0].q, questions[0].o));
-};
+  showQuestion();
+}
 
-window.nextQuestion = function () {
+function showQuestion() {
+  render(questionScreen(questions[qIndex].q, questions[qIndex].o));
+  document.querySelectorAll(".optionBtn").forEach(btn => {
+    btn.onclick = nextQuestion;
+  });
+}
+
+function nextQuestion() {
   qIndex++;
   if (qIndex < questions.length) {
-    render(questionScreen(questions[qIndex].q, questions[qIndex].o));
+    showQuestion();
   } else {
-    render(searchingScreen());
+    showVideo();
   }
-};
+}
 
-window.startVideoFromTap = function () {
+function showVideo() {
+  render(searchingScreen());
+
   const video = document.getElementById("matchVideo");
-  document.getElementById("videoTapBtn").style.display = "none";
+  const btn = document.getElementById("videoTapBtn");
 
-  video.muted = false;
-  video.volume = 0.9;
-  video.play();
+  btn.onclick = () => {
+    btn.style.display = "none";
+    video.muted = false;
+    video.volume = 0.9;
+    video.play();
+  };
 
-  video.onended = () => render(feedbackScreen());
-};
+  video.onended = showFeedback;
+}
 
-window.submitFeedback = async function () {
+function showFeedback() {
+  render(feedbackScreen());
+  document.getElementById("submitFeedbackBtn").onclick = submitFeedback;
+}
+
+async function submitFeedback() {
   const feedback = document.getElementById("feedbackInput").value;
   const rating = document.getElementById("ratingInput").value;
 
   if (!feedback || !rating) {
-    alert("Please fill feedback 😇");
+    alert("Please give feedback 😇");
     return;
   }
 
   await saveFeedback(userName, userAge, feedback, rating);
   render(resultScreen(userName));
-};
+}

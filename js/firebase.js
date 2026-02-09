@@ -1,12 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-// 🔥 YOUR FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyCogzoDlsHB_vHKkRPorDWx0W6xCExq7rg",
   authDomain: "soulmate-prank.firebaseapp.com",
@@ -19,22 +14,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// SAVE USER
-export async function saveUser(name, age) {
-  await addDoc(collection(db, "users"), {
-    name,
-    age,
-    createdAt: serverTimestamp()
+export function saveUser(name, age) {
+  return addDoc(collection(db, "users"), {
+    name, age, createdAt: serverTimestamp()
   });
 }
 
-// SAVE FEEDBACK
-export async function saveFeedback(name, age, feedback, rating) {
-  await addDoc(collection(db, "feedback"), {
-    name,
-    age,
-    feedback,
-    rating,
-    createdAt: serverTimestamp()
+export function saveFeedback(name, age, feedback, rating) {
+  return addDoc(collection(db, "feedback"), {
+    name, age, feedback, rating, createdAt: serverTimestamp()
   });
 }

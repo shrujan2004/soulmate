@@ -8,7 +8,8 @@ export function introScreen() {
       ${Array.from({ length: 30 }, (_, i) => `<option>${18+i}</option>`).join("")}
     </select>
 
-    <button onclick="saveUserInfo()" class="w-full bg-pink-500 text-white py-4 rounded-2xl font-semibold">
+    <button id="continueBtn"
+      class="w-full bg-pink-500 text-white py-4 rounded-2xl font-semibold">
       Continue ✨
     </button>
   `;
@@ -19,7 +20,7 @@ export function questionScreen(q, options) {
     <h2 class="text-xl font-bold text-center mb-5">${q}</h2>
     <div class="grid gap-3">
       ${options.map(o => `
-        <button onclick="nextQuestion()" class="border rounded-2xl p-4 hover:bg-pink-50">
+        <button class="optionBtn border rounded-2xl p-4 hover:bg-pink-50">
           ${o}
         </button>`).join("")}
     </div>
@@ -35,7 +36,7 @@ export function searchingScreen() {
         <source src="assets/videos/heaven.mp4" type="video/mp4">
       </video>
 
-      <button id="videoTapBtn" onclick="startVideoFromTap()"
+      <button id="videoTapBtn"
         class="absolute inset-0 bg-black/50 text-white flex items-center justify-center text-lg font-semibold rounded-2xl">
         Tap to continue 🔊
       </button>
@@ -55,7 +56,8 @@ export function feedbackScreen() {
       <option>⭐⭐⭐⭐</option><option>⭐⭐⭐⭐⭐</option>
     </select>
 
-    <button onclick="submitFeedback()" class="w-full bg-pink-500 text-white py-4 rounded-2xl">
+    <button id="submitFeedbackBtn"
+      class="w-full bg-pink-500 text-white py-4 rounded-2xl">
       Submit 💌
     </button>
   `;
