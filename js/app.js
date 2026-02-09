@@ -14,7 +14,7 @@ let qIndex = 0;
 let rating = 0;
 let answers = {};
 
-/* 🔥 SOUTH INDIA STATES */
+// South India states
 const southStates = [
   "Andhra Pradesh",
   "Karnataka",
@@ -23,53 +23,24 @@ const southStates = [
   "Telangana"
 ];
 
-/* 🇮🇳 ALL INDIAN STATES & UTs */
+// All Indian states + UTs
 const allStates = [
-  "Andhra Pradesh",
-  "Arunachal Pradesh",
-  "Assam",
-  "Bihar",
-  "Chhattisgarh",
-  "Goa",
-  "Gujarat",
-  "Haryana",
-  "Himachal Pradesh",
-  "Jharkhand",
-  "Karnataka",
-  "Kerala",
-  "Madhya Pradesh",
-  "Maharashtra",
-  "Manipur",
-  "Meghalaya",
-  "Mizoram",
-  "Nagaland",
-  "Odisha",
-  "Punjab",
-  "Rajasthan",
-  "Sikkim",
-  "Tamil Nadu",
-  "Telangana",
-  "Tripura",
-  "Uttar Pradesh",
-  "Uttarakhand",
-  "West Bengal",
-
-  /* UTs */
-  "Delhi",
-  "Chandigarh",
-  "Puducherry",
-  "Jammu & Kashmir",
-  "Ladakh",
-  "Lakshadweep",
-  "Andaman & Nicobar Islands",
+  "Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat",
+  "Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh",
+  "Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab",
+  "Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh",
+  "Uttarakhand","West Bengal",
+  "Delhi","Chandigarh","Puducherry","Jammu & Kashmir","Ladakh",
+  "Lakshadweep","Andaman & Nicobar Islands",
   "Dadra & Nagar Haveli and Daman & Diu"
 ];
 
-/* QUESTIONS */
+// 🔥 ALL QUESTIONS (INCLUDING YOUR EXTRA ONES)
 const questions = [
   { q: "Your ideal vibe?", o: ["Soft 🫶","Bold 😎","Funny 😂"] },
   { q: "Weekend?", o: ["Netflix 🍿","Party 🕺","Sleep 😴"] },
   { q: "Late night mood?", o: ["Overthinking 🌙","Music 🎧","Reels 📱"] },
+
   { q: "First thing you notice in someone?", o: ["Eyes 👀","Smile 😄","Confidence 😎"] },
   { q: "Your toxic trait?", o: ["Overthinking 🧠","Ghosting 👻","Jealous 😤"] },
   { q: "Biggest turn-on?", o: ["Respect 🙏","Humor 😂","Ambition 🔥"] },
@@ -87,30 +58,11 @@ window.onload = showIntro;
 /* ---------------- INTRO ---------------- */
 
 function showIntro() {
-  render(introScreen(allStates)); // 👈 pass full states list
-  setupDropdown("ageDropdown", "ageLabel", "ageInput");
-  setupDropdown("stateDropdown", "stateLabel", "stateInput");
+  render(introScreen(allStates));
   continueBtn.onclick = startFlow;
 }
 
-function setupDropdown(id, labelId, inputId) {
-  const dropdown = document.getElementById(id);
-  const label = document.getElementById(labelId);
-  const hidden = document.getElementById(inputId);
-
-  dropdown.querySelector(".dropdown-btn").onclick = () =>
-    dropdown.classList.toggle("open");
-
-  dropdown.querySelectorAll(".dropdown-item").forEach(item => {
-    item.onclick = () => {
-      label.textContent = item.textContent;
-      hidden.value = item.textContent;
-      dropdown.classList.remove("open");
-    };
-  });
-}
-
-/* ---------------- QUESTIONS ---------------- */
+/* ---------------- QUESTIONS FLOW ---------------- */
 
 function startFlow() {
   userName = nameInput.value;
@@ -171,30 +123,29 @@ function showResult() {
   submitFeedbackBtn.onclick = submitFeedback;
 }
 
-/* ---------------- SCRATCH ---------------- */
+/* ---------------- SCRATCH REVEAL ---------------- */
 
 function setupScratch() {
   const canvas = scratchCanvas;
   const img = soulmateImg;
   const ctx = canvas.getContext("2d");
 
-  img.onload = () => {
-    const r = img.getBoundingClientRect();
-    canvas.width = r.width;
-    canvas.height = r.height;
-    ctx.fillStyle = "#111";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.globalCompositeOperation = "destination-out";
-  };
+  const r = img.getBoundingClientRect();
+  canvas.width = r.width;
+  canvas.height = r.height;
+
+  ctx.fillStyle = "#111";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.globalCompositeOperation = "destination-out";
 
   let scratching = false;
   let count = 0;
 
   function pos(e) {
-    const r = canvas.getBoundingClientRect();
+    const b = canvas.getBoundingClientRect();
     return e.touches
-      ? { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top }
-      : { x: e.clientX - r.left, y: e.clientY - r.top };
+      ? { x: e.touches[0].clientX - b.left, y: e.touches[0].clientY - b.top }
+      : { x: e.clientX - b.left, y: e.clientY - b.top };
   }
 
   function scratch(e) {
@@ -203,8 +154,9 @@ function setupScratch() {
     ctx.beginPath();
     ctx.arc(x, y, 22, 0, Math.PI * 2);
     ctx.fill();
+
     if (++count > 120) {
-      canvas.style.display = "none";
+      canvas.remove();
       img.classList.add("revealed");
     }
   }

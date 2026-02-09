@@ -1,4 +1,4 @@
-export function introScreen() {
+export function introScreen(states) {
   return `
     <h2 class="text-2xl font-bold text-center mb-6">Soulmate Finder 💖</h2>
 
@@ -6,19 +6,12 @@ export function introScreen() {
 
     <select id="ageInput" class="input mb-4">
       <option value="">Select age</option>
-      ${Array.from({ length: 30 }, (_, i) => `<option>${18 + i}</option>`).join("")}
+      ${Array.from({length:30},(_,i)=>`<option>${18+i}</option>`).join("")}
     </select>
 
     <select id="stateInput" class="input mb-6">
       <option value="">Select state</option>
-      <option>Karnataka</option>
-      <option>Kerala</option>
-      <option>Tamil Nadu</option>
-      <option>Telangana</option>
-      <option>Andhra Pradesh</option>
-      <option>Maharashtra</option>
-      <option>Delhi</option>
-      <option>Punjab</option>
+      ${states.map(s=>`<option>${s}</option>`).join("")}
     </select>
 
     <button id="continueBtn"
@@ -32,17 +25,17 @@ export function questionScreen(q, options) {
   return `
     <h2 class="text-xl font-bold text-center mb-5">${q}</h2>
     <div class="grid gap-3">
-      ${options.map(o =>
-        `<button class="optionBtn border rounded-2xl p-4">${o}</button>`
-      ).join("")}
+      ${options.map(o=>`
+        <button class="optionBtn">${o}</button>
+      `).join("")}
     </div>
   `;
 }
 
 export function searchingScreen(state) {
   return `
-    <h2 class="text-xl font-bold text-center mb-2">Searching matches in</h2>
-    <p class="text-center text-pink-600 font-semibold mb-4">${state} 🌍</p>
+    <h2 class="text-xl font-bold text-center mb-2">Searching in</h2>
+    <p class="text-center text-pink-600 mb-4">${state} 🌍</p>
 
     <div class="relative">
       <video id="matchVideo" muted playsinline></video>
@@ -56,30 +49,23 @@ export function searchingScreen(state) {
 
 export function resultWithFeedback(name) {
   return `
-    <h2 class="text-2xl font-bold text-center text-pink-600 mb-4">
+    <h2 class="text-xl font-bold text-center text-pink-600 mb-4">
       ${name}, destiny has been watching you 💖
     </h2>
 
-    <p class="text-sm text-gray-700 mb-3">
-      This person enters your life quietly and changes everything.
-      They understand your silence, your moods, and your unspoken fears.
-    </p>
-
-    <p class="text-sm text-gray-700 mb-4">
-      Calm, emotionally mature, and deeply loyal — love with them feels
-      safe, familiar, and destined.
+    <p class="text-sm mb-4">
+      This person enters your life quietly, understands your silence,
+      and becomes your safe place without trying.
     </p>
 
     <div class="soulmate-wrapper">
-      <img src="./assets/images/soulmate.jpg"
-           id="soulmateImg"
-           class="soulmate-img" />
+      <img src="./assets/images/soulmate.jpg" id="soulmateImg" class="soulmate-img"/>
       <canvas id="scratchCanvas"></canvas>
       <div class="scratch-text">Scratch to reveal ✨</div>
     </div>
 
     <div class="star-rating">
-      ${[1,2,3,4,5].map(i => `<span class="star" data-value="${i}">★</span>`).join("")}
+      ${[1,2,3,4,5].map(i=>`<span class="star" data-value="${i}">★</span>`).join("")}
     </div>
 
     <textarea id="feedbackInput" class="input mb-4"
