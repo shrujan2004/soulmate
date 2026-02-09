@@ -57,15 +57,26 @@ export function resultWithFeedback(name) {
       ${name}, destiny has been watching you 💖
     </h2>
 
+    <p class="text-sm mb-3">
+      This soulmate arrives like a gentle shift in the air—subtle at first,
+      then unmistakable. They feel familiar in a way you can't explain,
+      like a memory you've never lived but always carried.
+    </p>
+    <p class="text-sm mb-3">
+      They notice the details you think no one sees: the pause before you speak,
+      the way your eyes soften around the right people, the stories you hide
+      behind your smiles. With them, being understood stops feeling rare.
+    </p>
     <p class="text-sm mb-4">
-      This person enters your life quietly, understands your silence,
-      and becomes your safe place without trying.
+      What makes it thrilling is the mystery—you won't meet them by chasing,
+      but by living. A random plan, a quiet place, a moment that feels ordinary
+      until it isn't. Stay open. The universe likes surprises.
     </p>
 
     <div class="soulmate-wrapper">
       <img src="./assets/images/soulmate.jpg" id="soulmateImg" class="soulmate-img"/>
       <canvas id="scratchCanvas"></canvas>
-      <div class="scratch-text">
+      <div class="scratch-text" id="scratchText">
         <button id="revealBtn" class="reveal-btn">Click to reveal ✨</button>
       </div>
     </div>

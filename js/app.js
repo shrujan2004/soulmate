@@ -151,6 +151,9 @@ function setupScratch() {
     if (typeof revealBtn !== "undefined") {
       revealBtn.remove();
     }
+    if (typeof scratchText !== "undefined") {
+      scratchText.remove();
+    }
   }
 
   function pos(e) {
